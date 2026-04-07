@@ -1,12 +1,19 @@
-// Prisma Client generator
+// =======================
+//   Prisma Client Setup
+// =======================
+
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearchPostgres"]
+  provider = "prisma-client-js"
 }
 
-// Database connection
+// =======================
+//     Database Provider
+// =======================
+// Prisma 7: NO URL HERE.
+// URL is defined in prisma.config.ts
+
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 // =======================
@@ -15,32 +22,31 @@ datasource db {
 
 // USERS
 model Usuario {
-  email      String  @id @db.Char(127)
-  nombre     String  @db.Char(127)
-  contraseña String  @db.Text
-  admin      Boolean @default(false)
-  
-  // Additional profile fields
-  telefono   String? @db.Char(20)
-  direccion  String? @db.Text
-  fecha_nacimiento DateTime? @db.Timestamp
-  genero     String? @db.Char(10)
-  biografia  String? @db.Text
-  idioma    String? @db.Char(5) @default("es")
-  newsletter  Boolean @default(false)
-  creado_en  DateTime @default(now()) @db.Timestamp
-  actualizado_en DateTime? @updatedAt @db.Timestamp
+  email            String   @id
+  nombre           String
+  contraseña       String
+  admin            Boolean  @default(false)
+
+  telefono         String?
+  direccion        String?
+  fecha_nacimiento DateTime?
+  genero           String?
+  biografia        String?
+  idioma           String   @default("es")
+  newsletter       Boolean  @default(false)
+  creado_en        DateTime @default(now())
+  actualizado_en   DateTime?
 
   @@map("usuarios")
 }
 
 // PRODUCTS
 model Producto {
-  id          Int      @id @default(autoincrement())
-  título      String   @db.Char(127)
-  descripción String   @db.Text
-  precio      Decimal
-  imagen      String   @db.Char(127)
+  id          Int     @id @default(autoincrement())
+  título      String
+  descripción String
+  precio      Float
+  imagen      String
 
   @@map("productos")
 }

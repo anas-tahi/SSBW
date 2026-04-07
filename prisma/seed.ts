@@ -1,22 +1,31 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { fileURLToPath } from 'url';
 
-const prisma = new PrismaClient();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = join(__filename, '..');
+
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./dev.db',
+});
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   try {
-    console.log('🌱 Starting database seed...');
+    console.log('Starting database seed...');
     
     // Read products from JSON file
     const productsPath = join(__dirname, '..', 'data', 'products.json');
     const productsData = JSON.parse(readFileSync(productsPath, 'utf-8'));
     
-    console.log(`📦 Found ${productsData.length} products to seed`);
+    console.log(`Found ${productsData.length} products to seed`);
     
     // Clear existing products
     await prisma.producto.deleteMany();
-    console.log('🧹 Cleared existing products');
+    console.log('Cleared existing products');
     
     // Insert products
     for (const product of productsData) {
@@ -28,17 +37,17 @@ async function main() {
           imagen: product.imagen
         }
       });
-      console.log(`✅ Inserted: ${product.título}`);
+      console.log(`Inserted: ${product.título}`);
     }
     
-    console.log(`🎉 Successfully seeded ${productsData.length} products!`);
+    console.log(`Successfully seeded ${productsData.length} products!`);
     
   } catch (error) {
-    console.error('❌ Error seeding database:', error);
+    console.error('Error seeding database:', error);
     throw error;
   } finally {
     await prisma.$disconnect();
-    console.log('🔌 Disconnected from database');
+    console.log('Disconnected from database');
   }
 }
 

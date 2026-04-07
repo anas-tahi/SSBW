@@ -1,9 +1,16 @@
 import { Router, Request, Response } from 'express';
-import prisma from '../prisma/prisma.client.js';
+import { PrismaClient } from '@prisma/client';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import logger from '../logger.js';
 import { PDFGenerator } from '../utils/pdf-generator.js';
 import fs from 'fs';
 import path from 'path';
+
+// Initialize Prisma Client with SQLite adapter
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./dev.db',
+});
+const prisma = new PrismaClient({ adapter });
 
 // Extend Express Request type to include our custom properties
 declare global {

@@ -1,8 +1,15 @@
 import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import prisma from '../prisma/prisma.client.js';
-import authClient from '../prisma/auth-client.js';
+import { PrismaClient } from '@prisma/client';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import bcrypt from 'bcrypt';
 import logger from '../logger.js';
+
+// Initialize Prisma Client with SQLite adapter
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./dev.db',
+});
+const prisma = new PrismaClient({ adapter });
 
 const router = Router();
 
@@ -89,18 +96,16 @@ router.post('/login', async (req: Request, res: Response) => {
     
     console.log('✅ User found in database:', usuario.email);
     
-    // Verify password using authClient
-    let authenticatedUser;
+    // Verify password using bcrypt
+    let isPasswordValid;
     try {
-      console.log('🔐 Verifying password...');
-      authenticatedUser = await authClient.verifyUser(email, contraseña);
-      console.log('✅ Password verified successfully');
+      console.log('Verifying password...');
+      isPasswordValid = await bcrypt.compare(contraseña, usuario.contraseña);
+      console.log('Password verification completed');
     } catch (error: any) {
-      console.log('❌ Password verification failed:', error?.message || 'Unknown error');
-      authenticatedUser = null;
+      console.log('Password verification failed:', error?.message || 'Unknown error');
+      isPasswordValid = false;
     }
-    
-    const isPasswordValid = !!authenticatedUser;
     
     if (!isPasswordValid) {
       logger.warn(`Login failed: Invalid password: ${email}`);
@@ -233,13 +238,16 @@ router.post('/register', async (req: Request, res: Response) => {
       });
     }
     
-    // Create user with authClient (which handles password hashing)
-    console.log('👤 Creating new user...');
-    const usuario = await authClient.createUserWithHash({
-      email,
-      nombre,
-      contraseña,
-      admin: false // New users are not admins by default
+    // Create user with bcrypt password hashing
+    console.log('Creating new user...');
+    const hashedPassword = await bcrypt.hash(contraseña, 12);
+    const usuario = await prisma.usuario.create({
+      data: {
+        email,
+        nombre,
+        contraseña: hashedPassword,
+        admin: false // New users are not admins by default
+      }
     });
     
     console.log('✅ User created successfully:', usuario.email);
