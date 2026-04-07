@@ -1,0 +1,46 @@
+// Prisma Client generator
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+// Database connection
+datasource db {
+  provider = "postgresql"
+}
+
+// =======================
+//        MODELS
+// =======================
+
+// USERS
+model Usuario {
+  email      String  @id @db.Char(127)
+  nombre     String  @db.Char(127)
+  contraseña String  @db.Text
+  admin      Boolean @default(false)
+  
+  // Additional profile fields
+  telefono   String? @db.Char(20)
+  direccion  String? @db.Text
+  fecha_nacimiento DateTime? @db.Timestamp
+  genero     String? @db.Char(10)
+  biografia  String? @db.Text
+  idioma    String? @db.Char(5) @default("es")
+  newsletter  Boolean @default(false)
+  creado_en  DateTime @default(now()) @db.Timestamp
+  actualizado_en DateTime? @updatedAt @db.Timestamp
+
+  @@map("usuarios")
+}
+
+// PRODUCTS
+model Producto {
+  id          Int      @id @default(autoincrement())
+  título      String   @db.Char(127)
+  descripción String   @db.Text
+  precio      Decimal
+  imagen      String   @db.Char(127)
+
+  @@map("productos")
+}

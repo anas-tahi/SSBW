@@ -1,0 +1,1020 @@
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { 
+    background: #0a0a0f !important; 
+    color: #f0f0f0; 
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+.search-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: -2;
+}
+
+.search-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201, 168, 76, 0.15) 0%, transparent 70%);
+    top: -200px;
+    left: -150px;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: floatBlob 20s ease-in-out infinite alternate;
+}
+
+.search-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(120, 119, 198, 0.15) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: floatBlob 25s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 80px) scale(1.1); }
+    100% { transform: translate(30px, 40px) scale(1); }
+}
+
+/* Main Container */
+.search-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Search Header */
+.search-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 4rem;
+    color: #0a0a0f;
+    animation: iconGlow 3s ease-in-out infinite alternate;
+    box-shadow: 0 20px 40px rgba(201, 168, 76, 0.3);
+}
+
+@keyframes iconGlow {
+    0% { transform: scale(1); box-shadow: 0 20px 40px rgba(201, 168, 76, 0.3); }
+    100% { transform: scale(1.05); box-shadow: 0 25px 50px rgba(201, 168, 76, 0.5); }
+}
+
+.search-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f0f0f0, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+}
+
+.search-subtitle {
+    color: #b8b8d1;
+    font-size: 1.3rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Search Section */
+.search-section {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    animation: fadeIn 1s ease-out 0.3s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.search-form {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, 
+        rgba(10, 10, 15, 0.8) 0%, 
+        rgba(26, 26, 46, 0.8) 50%, 
+        rgba(22, 33, 62, 0.8) 100%);
+    backdrop-filter: blur(30px);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 40px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(201, 168, 76, 0.2),
+        inset 0 -1px 0 rgba(201, 168, 76, 0.1);
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+.search-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(201, 168, 76, 0.3) 0%, 
+        rgba(201, 168, 76, 0.1) 25%, 
+        rgba(201, 168, 76, 0.05) 50%, 
+        rgba(201, 168, 76, 0.1) 75%, 
+        rgba(201, 168, 76, 0.3) 100%);
+    border-radius: 40px;
+    padding: 2px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    z-index: -1;
+    animation: borderGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+.search-form::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, 
+        rgba(201, 168, 76, 0.1) 0%, 
+        transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.search-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 35px 70px rgba(0, 0, 0, 0.7),
+        0 0 50px rgba(201, 168, 76, 0.3),
+        inset 0 1px 0 rgba(201, 168, 76, 0.3),
+        inset 0 -1px 0 rgba(201, 168, 76, 0.15);
+}
+
+.search-form:hover::after {
+    opacity: 1;
+}
+
+.search-form:focus-within {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(201, 168, 76, 0.4),
+        inset 0 1px 0 rgba(201, 168, 76, 0.4),
+        inset 0 -1px 0 rgba(201, 168, 76, 0.2);
+}
+
+.search-form:focus-within::after {
+    opacity: 1;
+    background: radial-gradient(circle, 
+        rgba(201, 168, 76, 0.15) 0%, 
+        transparent 50%);
+}
+
+/* Animated particles in background */
+.search-form .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 40px;
+}
+
+.search-form .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(201, 168, 76, 0.6);
+    border-radius: 50%;
+    animation: floatParticle 8s linear infinite;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100%) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%) translateX(20px);
+        opacity: 0;
+    }
+}
+
+.search-input-group {
+    position: relative;
+    flex: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: 28px 35px 28px 75px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    color: #0a0a0f;
+    font-size: 1.3rem;
+    font-weight: 500;
+    transition: all 0.4s ease;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input::placeholder {
+    color: rgba(10, 10, 15, 0.5);
+    font-weight: 400;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #c9a84c;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 
+        0 0 40px rgba(201, 168, 76, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px) scale(1.02);
+}
+
+.search-input-icon {
+    position: absolute;
+    left: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c9a84c;
+    font-size: 1.8rem;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus + .search-input-icon {
+    color: #e8d070;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.search-button {
+    padding: 28px 45px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
+}
+
+.search-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.search-button:hover::before {
+    left: 100%;
+}
+
+.search-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(201, 168, 76, 0.5);
+}
+
+.search-button:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Search Loading State */
+.search-input.loading {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(201, 168, 76, 0.6);
+}
+
+.search-input.loading::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(201, 168, 76, 0.3);
+    border-top: 3px solid #c9a84c;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Real-time Results */
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(201, 168, 76, 0.3);
+    border-radius: 20px;
+    margin-top: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.search-result-item {
+    padding: 20px;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-result-item:hover {
+    background: rgba(201, 168, 76, 0.1);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.search-result-content {
+    flex: 1;
+}
+
+.search-result-title {
+    font-weight: 700;
+    color: #0a0a0f;
+    margin-bottom: 5px;
+}
+
+.search-result-price {
+    color: #c9a84c;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Results Section */
+.results-section {
+    animation: slideUp 0.8s ease-out 0.5s both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.results-query {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.results-count {
+    color: #c9a84c;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: cardFadeIn 0.8s ease-out;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: #c9a84c;
+}
+
+.product-image-container {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.product-content {
+    padding: 30px;
+}
+
+.product-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    color: #b8b8d1;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #c9a84c;
+    margin-bottom: 25px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-view-details {
+    flex: 1;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    color: #f0f0f0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-view-details:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: #c9a84c;
+    color: #c9a84c;
+    transform: translateY(-2px);
+}
+
+.btn-add-cart {
+    flex: 1;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    border: none;
+    border-radius: 15px;
+    color: #0a0a0f;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add-cart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(201, 168, 76, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.empty-icon {
+    font-size: 6rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.empty-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 15px;
+}
+
+.empty-description {
+    color: #b8b8d1;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-back-home {
+    padding: 18px 35px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-back-home:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(201, 168, 76, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-title {
+        font-size: 2rem;
+    }
+    
+    .search-section {
+        max-width: 100%;
+        margin: 0 auto 40px;
+    }
+    
+    .search-form {
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+        border-radius: 30px;
+    }
+    
+    .search-form::before {
+        border-radius: 30px;
+    }
+    
+    .search-form .particles {
+        border-radius: 30px;
+    }
+    
+    .search-input {
+        padding: 22px 30px 22px 65px;
+        font-size: 1.1rem;
+        border-radius: 20px;
+    }
+    
+    .search-input-icon {
+        left: 30px;
+        font-size: 1.5rem;
+    }
+    
+    .search-button {
+        padding: 22px 35px;
+        font-size: 1.1rem;
+        border-radius: 20px;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-form {
+        padding: 8px;
+        gap: 15px;
+        border-radius: 25px;
+    }
+    
+    .search-form::before {
+        border-radius: 25px;
+    }
+    
+    .search-form .particles {
+        border-radius: 25px;
+    }
+    
+    .search-input {
+        padding: 18px 25px 18px 55px;
+        font-size: 1rem;
+    }
+    
+    .search-input-icon {
+        left: 25px;
+        font-size: 1.3rem;
+    }
+    
+    .search-button {
+        padding: 18px 25px;
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="search-bg"></div>
+
+<div class="search-container">
+    <!-- Search Header -->
+    <div class="search-header">
+        <div class="search-icon">
+            <i class="bi bi-search"></i>
+        </div>
+        <h1 class="search-title">Buscar Productos</h1>
+        <p class="search-subtitle">Descubre obras de arte únicas en nuestra colección exclusiva</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <form method="GET" action="/buscar" class="search-form" id="searchForm">
+            <!-- Animated Particles Background -->
+            <div class="particles" id="particles"></div>
+            
+            <div class="search-input-group">
+                <i class="bi bi-search search-input-icon"></i>
+                <input type="text" 
+                       name="q" 
+                       id="searchInput"
+                       class="search-input" 
+                       placeholder="Busca por título, estilo o artista..." 
+                       value="{{ query or '' }}"
+                       autofocus
+                       autocomplete="off">
+                
+                <!-- Real-time Search Results -->
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            <button type="submit" class="search-button">
+                <i class="bi bi-search me-2"></i>
+                Buscar
+            </button>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    {% if query %}
+        <div class="results-section">
+            <div class="results-header">
+                <h2 class="results-query">Resultados para: "{{ query }}"</h2>
+                {% if productos.length > 0 %}
+                    <div class="results-count">{{ productos.length }} productos encontrados</div>
+                {% endif %}
+            </div>
+            
+            {% if productos.length > 0 %}
+                <div class="products-grid">
+                    {% for producto in productos %}
+                        <div class="product-card">
+                            <div class="product-image-container">
+                                {% if producto.imagen %}
+                                    <img src="/imagenes/{{ producto.imagen }}" 
+                                         alt="{{ producto.título }}" 
+                                         class="product-image">
+                                {% else %}
+                                    <div class="product-image d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image display-1 text-muted"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="product-overlay"></div>
+                            </div>
+                            
+                            <div class="product-content">
+                                <h3 class="product-title">{{ producto.título }}</h3>
+                                <p class="product-description">{{ producto.descripción }}</p>
+                                <div class="product-price">€{{ producto.precio }}</div>
+                                
+                                <div class="product-actions">
+                                    <a href="/producto/{{ producto.id }}" class="btn-view-details">
+                                        <i class="bi bi-eye"></i>
+                                        <span>Ver detalles</span>
+                                    </a>
+                                    
+                                    {% if usuario %}
+                                        <form action="/al-carrito/{{ producto.id }}" method="POST" style="margin: 0;">
+                                            <input type="hidden" name="cantidad" value="1">
+                                            <button type="submit" class="btn-add-cart">
+                                                <i class="bi bi-cart-plus"></i>
+                                                <span>Añadir</span>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <button type="button" class="btn-add-cart" onclick="showLoginPrompt()" style="cursor: not-allowed; opacity: 0.7;">
+                                            <i class="bi bi-lock"></i>
+                                            <span>Inicia sesión</span>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h3 class="empty-title">No se encontraron productos</h3>
+                    <p class="empty-description">
+                        No hay resultados para "{{ query }}". Intenta con otra búsqueda o explora nuestra colección completa.
+                    </p>
+                    <a href="/" class="btn-back-home">
+                        <i class="bi bi-house me-2"></i>
+                        Volver al inicio
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <h3 class="empty-title">¿Qué estás buscando?</h3>
+            <p class="empty-description">
+                Usa el buscador para encontrar productos específicos o explora nuestra colección de arte exclusivo.
+            </p>
+            <a href="/" class="btn-back-home">
+                <i class="bi bi-house me-2"></i>
+                Explorar productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+// Create animated particles
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 15;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// Initialize particles when DOM is loaded
+document.addEventListener('DOMContentLoaded', createParticles);
+
+// Login prompt function
+function showLoginPrompt() {
+    if (confirm('Para añadir productos al carrito, necesitas iniciar sesión.\n\n¿Deseas ir a la página de login ahora?')) {
+        window.location.href = '/login';
+    }
+}
+
+let searchTimeout;
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const searchForm = document.getElementById('searchForm');
+
+// Real-time search function
+async function performSearch(query) {
+    if (query.length < 1) {
+        searchResults.style.display = 'none';
+        searchInput.classList.remove('loading');
+        return;
+    }
+    
+    // Add loading state
+    searchInput.classList.add('loading');
+    
+    try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Handle error response
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        // Ensure we have an array
+        const products = Array.isArray(data) ? data : [];
+        
+        displaySearchResults(products, query);
+    } catch (error) {
+        console.error('Search error:', error);
+        searchResults.style.display = 'none';
+    } finally {
+        // Remove loading state
+        searchInput.classList.remove('loading');
+    }
+}
+
+// Display search results
+function displaySearchResults(products, query) {
+    if (products.length === 0) {
+        searchResults.innerHTML = `
+            <div class="search-result-item">
+                <div class="search-result-content">
+                    <div class="search-result-title">No se encontraron productos para "${query}"</div>
+                </div>
+            </div>
+        `;
+    } else {
+        searchResults.innerHTML = products.map(product => `
+            <div class="search-result-item" onclick="selectProduct(${product.id})">
+                ${product.imagen ? 
+                    `<img src="/imagenes/${product.imagen}" class="search-result-image" alt="${product.título}">` :
+                    `<div class="search-result-image d-flex align-items-center justify-content-center">
+                        <i class="bi bi-image text-muted"></i>
+                    </div>`
+                }
+                <div class="search-result-content">
+                    <div class="search-result-title">${highlightMatch(product.título, query)}</div>
+                    <div class="search-result-price">€${product.precio}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    searchResults.style.display = 'block';
+}
+
+// Highlight matching text
+function highlightMatch(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, '<span style="color: #c9a84c; font-weight: 700;">$1</span>');
+}
+
+// Select product and navigate to details
+function selectProduct(productId) {
+    window.location.href = `/producto/${productId}`;
+}
+
+// Hide results when clicking outside
+document.addEventListener('click', function(event) {
+    if (!searchForm.contains(event.target)) {
+        searchResults.style.display = 'none';
+    }
+});
+
+// Real-time search on input
+searchInput.addEventListener('input', function(event) {
+    const query = event.target.value.trim();
+    
+    // Clear previous timeout
+    clearTimeout(searchTimeout);
+    
+    // Set new timeout for debouncing
+    searchTimeout = setTimeout(() => {
+        performSearch(query);
+    }, 300); // Wait 300ms after user stops typing
+});
+
+// Hide results when form is submitted
+searchForm.addEventListener('submit', function() {
+    searchResults.style.display = 'none';
+});
+</script>
+{% endblock %}

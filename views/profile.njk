@@ -1,0 +1,1011 @@
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { 
+    background: #0a0a0f !important; 
+    color: #f0f0f0; 
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+.perfil-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: -2;
+}
+
+.perfil-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(120, 119, 198, 0.3) 0%, transparent 70%);
+    top: -200px;
+    left: -150px;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: floatBlob 20s ease-in-out infinite alternate;
+}
+
+.perfil-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(198, 120, 221, 0.3) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: floatBlob 25s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 80px) scale(1.1); }
+    100% { transform: translate(30px, 40px) scale(1); }
+}
+
+/* Main Container */
+.perfil-container {
+    min-height: 100vh;
+    padding: 60px 20px 80px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: slideDown 1s ease-out;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #f0f0f0, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #b8b8d1;
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+/* Profile Content */
+.profile-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Alert Messages */
+.alert-message {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideDown 0.5s ease-out;
+}
+
+.alert-success {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.3);
+    color: #4caf50;
+}
+
+.alert-error {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: rgba(244, 67, 54, 0.3);
+    color: #f44336;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.alert-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.profile-header {
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0.1));
+    border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 30px;
+}
+
+.profile-header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0f;
+    font-size: 1.3rem;
+}
+
+.profile-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 0;
+}
+
+.profile-body {
+    padding: 40px;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(201, 168, 76, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c9a84c;
+    font-size: 1.1rem;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #c9a84c;
+    margin: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    color: #b8b8d1;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    color: #f0f0f0;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #c9a84c;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #666;
+}
+
+.form-input[readonly] {
+    background: rgba(255, 255, 255, 0.02);
+    color: #666;
+    cursor: not-allowed;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkbox-group:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #c9a84c;
+}
+
+.checkbox-input {
+    width: 20px;
+    height: 20px;
+    accent-color: #c9a84c;
+}
+
+.checkbox-label {
+    color: #f0f0f0;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Status Card */
+.status-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-label {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.status-value {
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-admin {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.badge-user {
+    background: rgba(33, 150, 243, 0.2);
+    color: #2196f3;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.badge-active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.badge-info {
+    background: rgba(0, 188, 212, 0.2);
+    color: #00bcd4;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 15px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-save::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-save:hover::before {
+    left: 100%;
+}
+
+.btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(201, 168, 76, 0.4);
+}
+
+.btn-reset {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f0f0f0;
+    border-radius: 15px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-reset:hover {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: #f44336;
+    color: #f44336;
+    transform: translateY(-3px);
+}
+
+.btn-home {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f0f0f0;
+    border-radius: 15px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.btn-home:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: #c9a84c;
+    color: #c9a84c;
+    transform: translateY(-3px);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 100px 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.empty-icon {
+    font-size: 6rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.empty-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.empty-text {
+    color: #b8b8d1;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .perfil-container {
+        padding: 40px 15px 60px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .profile-body {
+        padding: 20px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .status-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .btn-save,
+    .btn-reset,
+    .btn-home {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .profile-header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .profile-title {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="perfil-bg"></div>
+
+<div class="perfil-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Mi Perfil</h1>
+        <p class="hero-subtitle">Gestiona tu información personal y preferencias</p>
+    </div>
+    
+    {% if usuario %}
+        <!-- Alert Messages -->
+        {% if success %}
+            <div class="alert-message alert-success">
+                <div class="alert-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div>{{ success }}</div>
+                <button class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        {% endif %}
+        
+        {% if error %}
+            <div class="alert-message alert-error">
+                <div class="alert-icon">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <div>{{ error }}</div>
+                <button class="alert-close" onclick="this.parentElement.style.display='none'">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        {% endif %}
+        
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <div class="profile-card">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-header-content">
+                        <div class="profile-icon">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h2 class="profile-title">Información del Usuario</h2>
+                    </div>
+                </div>
+                
+                <!-- Profile Body -->
+                <div class="profile-body">
+                    <form method="POST" action="/perfil" id="profileForm">
+                        <!-- Basic Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-info-circle"></i>
+                                </div>
+                                <h3 class="section-title">Información Básica</h3>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" 
+                                           name="nombre" 
+                                           id="nombre"
+                                           class="form-input" 
+                                           value="{{ nombre or '' }}"
+                                           required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" 
+                                           name="email" 
+                                           id="email"
+                                           class="form-input" 
+                                           value="{{ email or '' }}"
+                                           readonly
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-telephone"></i>
+                                </div>
+                                <h3 class="section-title">Información de Contacto</h3>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" 
+                                           name="telefono" 
+                                           id="telefono"
+                                           class="form-input" 
+                                           value="{{ telefono or '' }}"
+                                           placeholder="+34 600 000 000">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <textarea name="direccion" 
+                                              id="direccion"
+                                              class="form-textarea" 
+                                              rows="3"
+                                              placeholder="Calle, Número, Ciudad, Provincia">{{ direccion or '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-card-text"></i>
+                                </div>
+                                <h3 class="section-title">Información Adicional</h3>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" 
+                                           name="fecha_nacimiento" 
+                                           id="fecha_nacimiento"
+                                           class="form-input" 
+                                           value="{{ fecha_nacimiento or '' }}">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="genero" class="form-label">Género</label>
+                                    <select name="genero" 
+                                            id="genero"
+                                            class="form-select">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="masculino" {% if genero == 'masculino' %}selected{% endif %}>Masculino</option>
+                                        <option value="femenino" {% if genero == 'femenino' %}selected{% endif %}>Femenino</option>
+                                        <option value="otro" {% if genero == 'otro' %}selected{% endif %}>Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="biografia" class="form-label">Biografía</label>
+                                <textarea name="biografia" 
+                                          id="biografia"
+                                          class="form-textarea" 
+                                          rows="4"
+                                          placeholder="Cuéntanos sobre ti...">{{ biografia or '' }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Preferences -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-sliders"></i>
+                                </div>
+                                <h3 class="section-title">Preferencias</h3>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="idioma" class="form-label">Idioma Preferido</label>
+                                    <select name="idioma" 
+                                            id="idioma"
+                                            class="form-select">
+                                        <option value="es" {% if idioma == 'es' %}selected{% endif %}>Español</option>
+                                        <option value="en" {% if idioma == 'en' %}selected{% endif %}>English</option>
+                                        <option value="fr" {% if idioma == 'fr' %}selected{% endif %}>Français</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" 
+                                               name="newsletter" 
+                                               id="newsletter"
+                                               value="true"
+                                               {% if newsletter %}checked{% endif %}
+                                               class="checkbox-input">
+                                        <label for="newsletter" class="checkbox-label">
+                                            Recibir Newsletter y Ofertas
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Account Status -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h3 class="section-title">Estado de la Cuenta</h3>
+                            </div>
+                            
+                            <div class="status-card">
+                                <div class="status-grid">
+                                    <div class="status-item">
+                                        <span class="status-label">Usuario</span>
+                                        <span class="status-value">{{ usuario }}</span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-label">Rol</span>
+                                        <span class="status-badge">
+                                            {% if admin %}
+                                                <i class="bi bi-shield-fill-exclamation"></i>
+                                                Administrador
+                                            {% else %}
+                                                <i class="bi bi-person-fill"></i>
+                                                Usuario
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-label">Estado</span>
+                                        <span class="status-badge badge-active">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Activo
+                                        </span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-label">Carrito</span>
+                                        <span class="status-badge badge-info">
+                                            <i class="bi bi-cart-fill"></i>
+                                            {{ total_carrito or 0 }} items
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button type="submit" class="btn-save">
+                                <i class="bi bi-save"></i>
+                                <span>Guardar Cambios</span>
+                            </button>
+                            <button type="button" class="btn-reset" onclick="resetForm()">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                <span>Restablecer</span>
+                            </button>
+                            <a href="/" class="btn-home">
+                                <i class="bi bi-house"></i>
+                                <span>Volver al Inicio</span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-person-x"></i>
+            </div>
+            <h2 class="empty-title">No has iniciado sesión</h2>
+            <p class="empty-text">Para ver tu perfil, por favor inicia sesión primero.</p>
+            
+            <div class="empty-actions">
+                <a href="/login" class="btn-save">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Iniciar Sesión</span>
+                </a>
+                <a href="/register" class="btn-home">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Crear Cuenta</span>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function resetForm() {
+    if (confirm('¿Estás seguro de que quieres restablecer todos los cambios?')) {
+        document.getElementById('profileForm').reset();
+    }
+}
+
+// Add form validation and animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animations to form sections
+    const sections = document.querySelectorAll('.form-section');
+    sections.forEach((section, index) => {
+        section.style.animationDelay = `${index * 0.1}s`;
+        section.style.animation = 'fadeInUp 0.6s ease-out both';
+    });
+    
+    // Add ripple effect to buttons
+    const buttons = document.querySelectorAll('.btn-save, .btn-reset, .btn-home');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            // Skip if it's a form submission
+            if (this.type === 'submit') return;
+            
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple-animation 0.6s ease-out';
+            ripple.style.pointerEvents = 'none';
+            
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Add input focus effects
+    const inputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+    
+    // Form submission validation
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        const nombre = document.getElementById('nombre').value.trim();
+        const email = document.getElementById('email').value.trim();
+        
+        if (!nombre) {
+            alert('Por favor, ingresa tu nombre completo.');
+            e.preventDefault();
+            return false;
+        }
+        
+        if (!email) {
+            alert('Por favor, ingresa tu correo electrónico.');
+            e.preventDefault();
+            return false;
+        }
+        
+        console.log('Form submitted successfully');
+        return true;
+    });
+});
+</script>
+
+<style>
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Dynamic badge colors */
+.status-badge {
+    background: rgba(201, 168, 76, 0.2);
+    color: #c9a84c;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+}
+
+.status-badge.badge-admin {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.status-badge.badge-user {
+    background: rgba(33, 150, 243, 0.2);
+    color: #2196f3;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.status-badge.badge-active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.status-badge.badge-info {
+    background: rgba(0, 188, 212, 0.2);
+    color: #00bcd4;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+}
+</style>
+{% endblock %}

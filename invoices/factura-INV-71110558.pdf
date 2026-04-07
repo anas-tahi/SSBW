@@ -1,0 +1,147 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 595 842]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+4 0 obj
+<<
+/Length 1915
+>>
+stream
+BT
+/F1 12 Tf
+50 792 Td
+(FACTURA ELECTRÓNICA - TIENDA PRADO) Tj
+50 776 Td
+(===============================================) Tj
+50 760 Td
+(Factura N°: INV-71110558) Tj
+50 744 Td
+(Fecha: 6/4/2026) Tj
+50 728 Td
+(Hora: 12:25:10) Tj
+50 712 Td
+() Tj
+50 696 Td
+(DATOS DEL CLIENTE) Tj
+50 680 Td
+(-----------------------------------------------) Tj
+50 664 Td
+(Nombre: gg                                                                                                                             ) Tj
+50 648 Td
+(Email: gg@gmail.com                                                                                                                   ) Tj
+50 632 Td
+(Tarjeta: **** **** **** N/A) Tj
+50 616 Td
+() Tj
+50 600 Td
+(DATOS DE FACTURACIÓN) Tj
+50 584 Td
+(-----------------------------------------------) Tj
+50 568 Td
+(Método: Tarjeta de Crédito) Tj
+50 552 Td
+(Estado: Pagado) Tj
+50 536 Td
+(Moneda: EUR) Tj
+50 520 Td
+(Referencia: 110558) Tj
+50 504 Td
+() Tj
+50 488 Td
+(PRODUCTOS) Tj
+50 472 Td
+(-----------------------------------------------) Tj
+50 456 Td
+(Descripción                     Cantidad    Precio Unit.    Subtotal) Tj
+50 440 Td
+(Producto                           1    ¬      0.00    ¬      0.00) Tj
+50 424 Td
+() Tj
+50 408 Td
+(RESUMEN FINANCIERO) Tj
+50 392 Td
+(-----------------------------------------------) Tj
+50 376 Td
+(Subtotal: ¬42.50) Tj
+50 360 Td
+(IVA \(21%\): ¬8.92) Tj
+50 344 Td
+(Envío: ¬4.99) Tj
+50 328 Td
+(TOTAL: ¬56.41) Tj
+50 312 Td
+() Tj
+50 296 Td
+(INFORMACIÓN DE LA EMPRESA) Tj
+50 280 Td
+(-----------------------------------------------) Tj
+50 264 Td
+(Tienda Prado) Tj
+50 248 Td
+(C/ Comercio, 123 - 28001 Madrid, España) Tj
+50 232 Td
+(CIF: B-12345678) Tj
+50 216 Td
+(Tel: +34 912 345 678) Tj
+50 200 Td
+(Email: info@tiendaprado.com) Tj
+50 184 Td
+() Tj
+50 168 Td
+(Esta factura es válida como documento fiscal) Tj
+50 152 Td
+(Autenticación: 110558) Tj
+50 136 Td
+(Emisión: 6/4/2026) Tj
+50 120 Td
+() Tj
+ET
+endstream
+
+endobj
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002208 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+2278
+%%EOF

@@ -1,0 +1,884 @@
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { 
+    background: #0a0a0f !important; 
+    color: #f0f0f0; 
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+.carrito-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: -2;
+}
+
+.carrito-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(120, 119, 198, 0.3) 0%, transparent 70%);
+    top: -200px;
+    left: -150px;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: floatBlob 20s ease-in-out infinite alternate;
+}
+
+.carrito-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(198, 120, 221, 0.3) 0%, transparent 70%);
+    bottom: -100px;
+    right: -100px;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: floatBlob 25s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 80px) scale(1.1); }
+    100% { transform: translate(30px, 40px) scale(1); }
+}
+
+/* Main Container */
+.carrito-container {
+    min-height: 100vh;
+    padding: 60px 20px 80px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: slideDown 1s ease-out;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #f0f0f0, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #b8b8d1;
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+/* Cart Content */
+.cart-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Cart Items */
+.cart-items-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    margin-bottom: 40px;
+}
+
+.cart-header {
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0.1));
+    border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 30px;
+}
+
+.cart-header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #c9a84c, #e8d070);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0f;
+    font-size: 1.3rem;
+}
+
+.cart-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin: 0;
+}
+
+.cart-body {
+    padding: 40px;
+}
+
+/* Cart Table */
+.cart-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.cart-table th {
+    background: rgba(201, 168, 76, 0.1);
+    color: #c9a84c;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    padding: 20px;
+    text-align: left;
+    border: none;
+}
+
+.cart-table th:first-child {
+    border-top-left-radius: 15px;
+}
+
+.cart-table th:last-child {
+    border-top-right-radius: 15px;
+    text-align: center;
+}
+
+.cart-table td {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #b8b8d1;
+    vertical-align: middle;
+}
+
+.cart-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cart-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-info:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.price-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c9a84c;
+}
+
+.quantity-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+.subtotal-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    text-align: right;
+}
+
+.actions-cell {
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-view {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f0f0f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.btn-view:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: #c9a84c;
+    color: #c9a84c;
+    transform: translateY(-2px);
+}
+
+.btn-remove {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: #f44336;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-remove:hover {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: #f44336;
+    transform: translateY(-2px);
+}
+
+/* Summary Section */
+.summary-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.summary-details {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.summary-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #c9a84c;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary-label {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.summary-value {
+    font-size: 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.summary-value.highlight {
+    color: #c9a84c;
+}
+
+.summary-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 25px 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-total-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #f0f0f0;
+}
+
+.summary-total-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #4caf50;
+    font-family: 'Space Mono', monospace;
+}
+
+/* Actions Card */
+.actions-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    height: fit-content;
+}
+
+.actions-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #c9a84c;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-buttons-main {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-continue-shopping {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f0f0f0;
+    border-radius: 15px;
+    padding: 18px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.btn-continue-shopping:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: #c9a84c;
+    color: #c9a84c;
+    transform: translateY(-3px);
+}
+
+.btn-checkout {
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 15px;
+    padding: 18px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.btn-checkout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-checkout:hover::before {
+    left: 100%;
+}
+
+.btn-checkout:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(76, 175, 80, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 100px 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.empty-icon {
+    font-size: 6rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.empty-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.empty-text {
+    color: #b8b8d1;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .carrito-container {
+        padding: 40px 15px 60px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .cart-body {
+        padding: 20px;
+    }
+    
+    .cart-table {
+        font-size: 0.9rem;
+    }
+    
+    .cart-table th,
+    .cart-table td {
+        padding: 15px 10px;
+    }
+    
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .product-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .summary-section {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .empty-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .cart-table {
+        font-size: 0.8rem;
+    }
+    
+    .cart-table th,
+    .cart-table td {
+        padding: 12px 8px;
+    }
+    
+    .product-name {
+        font-size: 1rem;
+    }
+    
+    .summary-value {
+        font-size: 1rem;
+    }
+    
+    .summary-total-value {
+        font-size: 1.5rem;
+    }
+    
+    .action-buttons-main {
+        gap: 10px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="carrito-bg"></div>
+
+<div class="carrito-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Mi Carrito</h1>
+        <p class="hero-subtitle">Gestiona tus productos seleccionados</p>
+    </div>
+    
+    <!-- Cart Content -->
+    <div class="cart-content">
+        {% if carrito and carrito|length > 0 %}
+            <!-- Cart Items -->
+            <div class="cart-items-card">
+                <div class="cart-header">
+                    <div class="cart-header-content">
+                        <div class="cart-icon">
+                            <i class="bi bi-cart3"></i>
+                        </div>
+                        <h2 class="cart-title">Productos en tu Carrito</h2>
+                    </div>
+                </div>
+                
+                <div class="cart-body">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in carrito %}
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        {% if item.imagen %}
+                                            <img src="/imagenes/{{ item.imagen }}" 
+                                                 alt="{{ item.titulo }}" 
+                                                 class="product-image">
+                                        {% else %}
+                                            <div class="product-image bg-dark d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="product-details">
+                                            <div class="product-name">{{ item.titulo }}</div>
+                                            {% if item.descripcion %}
+                                            <div class="product-description">
+                                                {{ item.descripcion | default('') | slice(0, 80) }}...
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="price-cell">€{{ item.precio }}</td>
+                                <td class="quantity-cell">{{ item.cantidad }}</td>
+                                <td class="subtotal-cell">€{{ (item.precio * item.cantidad) | round(2) }}</td>
+                                <td class="actions-cell">
+                                    <div class="action-buttons">
+                                        <a href="/producto/{{ item.id }}" class="btn-view">
+                                            <i class="bi bi-eye"></i>
+                                            <span>Ver</span>
+                                        </a>
+                                        <form action="/carrito/eliminar/{{ item.id }}" method="POST" style="margin: 0;">
+                                            <button type="submit" class="btn-remove" onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?')">
+                                                <i class="bi bi-trash"></i>
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="summary-section">
+                <!-- Summary Details -->
+                <div class="summary-details">
+                    <h3 class="summary-title">
+                        <i class="bi bi-calculator me-2"></i>Resumen del Carrito
+                    </h3>
+                    
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">€{{ (carrito | sum('precio') * carrito | sum('cantidad')) | round(2) or '0.00' }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">IVA (21%)</span>
+                            <span class="summary-value">€{{ ((carrito | sum('precio') * carrito | sum('cantidad')) * 0.21) | round(2) or '0.00' }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Envío</span>
+                            <span class="summary-value highlight">Gratis</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Descuento</span>
+                            <span class="summary-value">€0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-total">
+                        <span class="summary-total-label">Total:</span>
+                        <span class="summary-total-value">€{{ ((carrito | sum('precio') * carrito | sum('cantidad')) * 1.21) | round(2) or '0.00' }}</span>
+                    </div>
+                </div>
+                
+                <!-- Actions Card -->
+                <div class="actions-card">
+                    <h3 class="actions-title">
+                        <i class="bi bi-lightning me-2"></i>Acciones
+                    </h3>
+                    
+                    <div class="action-buttons-main">
+                        <a href="/" class="btn-continue-shopping">
+                            <i class="bi bi-arrow-left"></i>
+                            <span>Seguir Comprando</span>
+                        </a>
+                        
+                        <a href="/pago" class="btn-checkout">
+                            <i class="bi bi-credit-card"></i>
+                            <span>Proceder al Pago</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-cart-x"></i>
+                </div>
+                <h2 class="empty-title">Tu carrito está vacío</h2>
+                <p class="empty-text">No hay productos en tu carrito de compras.</p>
+                
+                <div class="empty-actions">
+                    <a href="/" class="btn-continue-shopping">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Seguir Comprando</span>
+                    </a>
+                    <a href="/buscar" class="btn-view">
+                        <i class="bi bi-search"></i>
+                        <span>Buscar Productos</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animations to cart items
+    const cartRows = document.querySelectorAll('.cart-table tbody tr');
+    cartRows.forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
+        row.style.animation = 'fadeInUp 0.6s ease-out both';
+    });
+    
+    // Add ripple effect to buttons
+    const buttons = document.querySelectorAll('.btn-view, .btn-remove, .btn-continue-shopping, .btn-checkout');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            // Skip if it's a form submission or external link
+            if (this.tagName === 'A' && this.href) return;
+            if (this.tagName === 'BUTTON' && this.type === 'submit') return;
+            
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple-animation 0.6s ease-out';
+            ripple.style.pointerEvents = 'none';
+            
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Calculate totals dynamically
+    function calculateTotals() {
+        const priceCells = document.querySelectorAll('.price-cell');
+        const quantityCells = document.querySelectorAll('.quantity-cell');
+        const subtotalCells = document.querySelectorAll('.subtotal-cell');
+        
+        let subtotal = 0;
+        priceCells.forEach((cell, index) => {
+            const price = parseFloat(cell.textContent.replace('€', ''));
+            const quantity = parseInt(quantityCells[index].textContent);
+            const itemSubtotal = price * quantity;
+            subtotal += itemSubtotal;
+            
+            if (subtotalCells[index]) {
+                subtotalCells[index].textContent = '€' + itemSubtotal.toFixed(2);
+            }
+        });
+        
+        const iva = subtotal * 0.21;
+        const total = subtotal + iva;
+        
+        // Update summary if elements exist
+        const subtotalElement = document.querySelector('.summary-value');
+        const ivaElement = document.querySelectorAll('.summary-value')[1];
+        const totalElement = document.querySelector('.summary-total-value');
+        
+        if (subtotalElement) subtotalElement.textContent = '€' + subtotal.toFixed(2);
+        if (ivaElement) ivaElement.textContent = '€' + iva.toFixed(2);
+        if (totalElement) totalElement.textContent = '€' + total.toFixed(2);
+    }
+    
+    // Calculate totals on page load
+    calculateTotals();
+});
+</script>
+
+<style>
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Custom sum filter for Nunjucks calculations */
+.cart-table .price-cell::after {
+    content: attr(data-price);
+    display: none;
+}
+</style>
+{% endblock %}

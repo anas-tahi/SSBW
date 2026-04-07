@@ -1,0 +1,619 @@
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body { background: #080810 !important; color: #f0ede6; }
+
+.pg-pago {
+  min-height: calc(100vh - 60px);
+  padding: 48px 24px 80px;
+  position: relative; overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+}
+.pg-pago::before {
+  content:''; position:fixed; width:600px; height:600px;
+  background:radial-gradient(circle,rgba(90,55,0,.5) 0%,transparent 70%);
+  top:-200px; left:-150px; border-radius:50%;
+  filter:blur(80px); pointer-events:none; z-index:0;
+  animation:blobA 20s ease-in-out infinite alternate;
+}
+.pg-pago::after {
+  content:''; position:fixed; width:500px; height:500px;
+  background:radial-gradient(circle,rgba(20,10,60,.65) 0%,transparent 70%);
+  bottom:-100px; right:-100px; border-radius:50%;
+  filter:blur(80px); pointer-events:none; z-index:0;
+  animation:blobB 25s ease-in-out infinite alternate;
+}
+@keyframes blobA { to{transform:translate(60px,80px)} }
+@keyframes blobB { to{transform:translate(-40px,-60px)} }
+
+.pg-grid {
+  position:relative; z-index:1;
+  max-width:1080px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:56px; align-items:start;
+}
+.pg-left { display:flex; flex-direction:column; gap:36px; }
+.pg-eyebrow {
+  font-family:'Space Mono',monospace; font-size:.7rem;
+  letter-spacing:.22em; text-transform:uppercase; color:#c9a84c; margin-bottom:8px;
+}
+.pg-title {
+  font-size:clamp(2rem,4vw,3rem); font-weight:300;
+  line-height:1.1; letter-spacing:-.02em; color:#f0ede6;
+}
+.pg-title strong { font-weight:700; color:#c9a84c; font-style:italic; }
+
+/* ════════════════════════════════════════════════
+   CARD  ·  new bankcard.png
+   Natural size: ~1120×746  →  ratio = 66.6%
+   Card content area (excluding outer dark bg):
+     chip+wifi: top-left quadrant
+     number:    center ~52% top
+     expiry:    ~67% top, left
+     name:      ~82% top, left   ← "PRADO TIENDA" printed here
+     vence:     ~82% top, right
+════════════════════════════════════════════════ */
+.card-scene { width:100%; max-width:480px; perspective:1200px; }
+
+.card-flipper {
+  width:100%; padding-bottom:66.6%;
+  position:relative; transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.4,0,.2,1);
+  animation:cardFloat 5s ease-in-out infinite;
+  filter:drop-shadow(0 24px 52px rgba(0,0,0,.85));
+}
+.card-flipper.is-flipped { transform:rotateY(180deg); animation:none; }
+@keyframes cardFloat {
+  0%,100%{ transform:translateY(0) rotateX(2deg) rotateY(-1deg); }
+  50%    { transform:translateY(-10px) rotateX(-1deg) rotateY(1deg); }
+}
+.card-face {
+  position:absolute; inset:0; border-radius:16px;
+  backface-visibility:hidden; overflow:hidden;
+}
+.card-face-front { transform:rotateY(0deg); }
+.card-face-back  { transform:rotateY(180deg); }
+
+.card-img {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; border-radius:16px; display:block;
+  user-select:none; pointer-events:none;
+}
+.card-img-back {
+  filter:brightness(.55) hue-rotate(160deg) saturate(.4);
+}
+
+/* ── Cover block: only "PRADO TIENDA" text on card image ── */
+.cover-name {
+  position:absolute;
+  top:76%; left:5%;
+  width:54%; height:16%;
+  background:#111;
+  border-radius:2px;
+}
+
+/* ── Live data overlay ── */
+.card-data { position:absolute; inset:0; pointer-events:none; }
+
+/* Number */
+.cf-number {
+  position:absolute;
+  top:50%; left:6%;
+  transform:translateY(-50%);
+  display:flex; gap:2%;
+}
+.cf-seg {
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.72rem,2.7vw,1.18rem);
+  letter-spacing:.1em;
+  color:rgba(255,255,255,.28);
+  text-shadow:0 1px 4px rgba(0,0,0,.95);
+  transition:color .15s, text-shadow .15s;
+  min-width:4.2ch; text-align:center; line-height:1;
+}
+.cf-seg.typed {
+  color:rgba(255,255,255,.92);
+  text-shadow:0 0 10px rgba(201,168,76,.35), 0 1px 4px rgba(0,0,0,.95);
+}
+.cf-seg.active {
+  color:#f0d060;
+  text-shadow:0 0 18px rgba(240,208,60,.9), 0 1px 3px rgba(0,0,0,.95);
+}
+
+/* Shared label/value styles */
+.cf-micro {
+  display:block; font-family:'Outfit',sans-serif;
+  font-size:clamp(.27rem,.6vw,.42rem);
+  letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.32);
+}
+.cf-val {
+  display:block; font-family:'Space Mono',monospace;
+  font-size:clamp(.48rem,1.45vw,.72rem);
+  letter-spacing:.08em; color:rgba(255,255,255,.82);
+  text-shadow:0 1px 4px rgba(0,0,0,.95); transition:color .2s;
+}
+.cf-val.active { color:#f0d060; text-shadow:0 0 10px rgba(240,208,60,.7); }
+
+/* Expiry — below number */
+.cf-exp-wrap { position:absolute; top:67%; left:6%; line-height:1.3; }
+
+/* Name — bottom left, over the printed "PRADO TIENDA" */
+.cf-name-wrap { position:absolute; top:79%; left:6%; line-height:1.3; }
+
+/* Vence — bottom right on red side */
+.cf-vence-wrap { position:absolute; top:79%; right:5%; line-height:1.3; text-align:right; }
+
+/* ── CARD BACK ── */
+.card-back-glass {
+  position:absolute; inset:0; border-radius:16px;
+  background:linear-gradient(150deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%);
+}
+.cb-stripe {
+  position:absolute; top:17%; left:0; right:0; height:14%;
+  background:linear-gradient(180deg,#060606 0%,#000 55%,#060606 100%);
+}
+.cb-sig-area {
+  position:absolute; bottom:24%; left:7%; right:7%;
+  display:flex; align-items:center; gap:10px;
+}
+.cb-sig-tape {
+  flex:1; height:36px;
+  background:repeating-linear-gradient(90deg,#e2e2e2 0,#e2e2e2 8px,#c8c8c8 8px,#c8c8c8 16px);
+  border-radius:3px;
+}
+.cb-cvv-box {
+  background:rgba(255,255,255,.95); border-radius:4px;
+  padding:6px 12px; min-width:50px; text-align:center;
+}
+.cb-cvv-val {
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.75rem,2vw,1rem); letter-spacing:.2em; color:#111; display:block;
+}
+.cb-cvv-label {
+  font-family:'Outfit',sans-serif; font-size:.55rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.45); margin-right:2px; white-space:nowrap;
+}
+
+/* ── SUMMARY ── */
+.pg-summary {
+  background:#111120; border:1px solid #252535; border-radius:18px; padding:26px 30px;
+}
+.pg-summary-title {
+  font-size:.72rem; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:#6a6680; margin-bottom:18px;
+}
+.pg-summary-lines { display:flex; flex-direction:column; gap:11px; }
+.pg-sum-line { display:flex; justify-content:space-between; font-size:.9rem; color:#7a7690; }
+.pg-sum-line.is-total {
+  border-top:1px solid #252535; margin-top:6px; padding-top:14px;
+  font-size:1.05rem; font-weight:600; color:#f0ede6;
+}
+.pg-sum-line.is-total span:last-child { font-family:'Space Mono',monospace; color:#c9a84c; }
+.pg-trust { display:flex; gap:7px; flex-wrap:wrap; margin-top:18px; }
+.pg-trust-pill {
+  display:inline-flex; align-items:center; gap:5px; padding:4px 10px;
+  background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.18);
+  border-radius:999px; font-size:.68rem; color:#8a6e30;
+}
+
+/* ── FORM ── */
+.pg-right { position:sticky; top:90px; }
+.pg-form-card {
+  background:#0f0f1e; border:1px solid #222235; border-radius:20px;
+  padding:38px; box-shadow:0 40px 80px rgba(0,0,0,.7);
+  animation:slideUp .5s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.pg-form-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; }
+.pg-form-title { font-size:1.35rem; font-weight:600; color:#f0ede6; letter-spacing:-.01em; }
+.pg-cards-accepted { display:flex; gap:5px; }
+.pg-card-pill {
+  font-family:'Space Mono',monospace; font-size:.58rem; font-weight:700;
+  padding:3px 8px; background:#181828; border:1px solid #2a2a3f; border-radius:4px; color:#4a4a65;
+}
+.pg-field { margin-bottom:20px; }
+.pg-field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.pg-label {
+  display:block; font-size:.7rem; font-weight:500; letter-spacing:.1em;
+  text-transform:uppercase; color:#5a566e; margin-bottom:7px; transition:color .2s;
+}
+.pg-field:focus-within .pg-label { color:#c9a84c; }
+.pg-input-wrap { position:relative; }
+.pg-input {
+  width:100%; height:50px; background:#141424; border:1px solid #232338;
+  border-radius:12px; padding:0 46px 0 16px;
+  font-family:'Space Mono',monospace; font-size:.9rem; color:#f0ede6;
+  outline:none; transition:border-color .2s,box-shadow .2s,background .2s;
+  -webkit-appearance:none;
+}
+.pg-input::placeholder { font-family:'Outfit',sans-serif; font-size:.85rem; color:#35334a; }
+.pg-input:focus {
+  border-color:#c9a84c; background:#0d0d1c;
+  box-shadow:0 0 0 3px rgba(201,168,76,.1),0 2px 14px rgba(0,0,0,.5);
+}
+.pg-input:focus ~ .pg-input-icon { color:#c9a84c; }
+.pg-input-icon {
+  position:absolute; right:13px; top:50%; transform:translateY(-50%);
+  width:18px; height:18px; color:#35334a; pointer-events:none; transition:color .2s;
+}
+.pg-input-icon svg { width:100%; height:100%; }
+.pg-select {
+  width:100%; height:50px; background:#141424; border:1px solid #232338;
+  border-radius:12px; padding:0 46px 0 16px;
+  font-family:'Space Mono',monospace; font-size:.88rem; color:#f0ede6;
+  outline:none; transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none; appearance:none; cursor:pointer;
+}
+.pg-select:focus {
+  border-color:#c9a84c; background:#0d0d1c;
+  box-shadow:0 0 0 3px rgba(201,168,76,.1);
+}
+.pg-select option { background:#141424; color:#f0ede6; }
+.pg-field.has-error .pg-input,
+.pg-field.has-error .pg-select { border-color:#c0404a; animation:shake .35s ease; }
+.pg-field.has-error .pg-label { color:#c0404a; }
+.pg-field-err { display:none; margin-top:5px; font-size:.72rem; color:#c0404a; padding-left:2px; }
+.pg-field.has-error .pg-field-err { display:block; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+.pg-pay-btn {
+  width:100%; height:58px; margin-top:28px;
+  display:flex; align-items:center; justify-content:space-between; padding:0 22px;
+  background:linear-gradient(135deg,#7a5c10 0%,#c9a84c 50%,#e8d070 100%);
+  background-size:200% 100%; background-position:0% 0%;
+  border:none; border-radius:12px; cursor:pointer;
+  font-family:'Outfit',sans-serif; color:#0a0800; font-weight:700; font-size:.98rem;
+  transition:background-position .4s,transform .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(201,168,76,.22); position:relative; overflow:hidden;
+}
+.pg-pay-btn::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-100%); transition:transform .5s;
+}
+.pg-pay-btn:hover::before { transform:translateX(100%); }
+.pg-pay-btn:hover { background-position:100% 0%; transform:translateY(-2px); box-shadow:0 8px 32px rgba(201,168,76,.32); }
+.pg-pay-btn:active { transform:translateY(0); }
+.pg-pay-label { font-size:.98rem; }
+.pg-pay-amount { font-family:'Space Mono',monospace; font-size:1rem; opacity:.8; }
+.pg-pay-arrow { font-size:1.2rem; transition:transform .2s; }
+.pg-pay-btn:hover .pg-pay-arrow { transform:translateX(4px); }
+.pg-pay-spinner {
+  display:none; width:18px; height:18px;
+  border:2px solid rgba(0,0,0,.3); border-top-color:#000;
+  border-radius:50%; animation:spin .7s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.pg-pay-btn.is-loading .pg-pay-label,
+.pg-pay-btn.is-loading .pg-pay-amount,
+.pg-pay-btn.is-loading .pg-pay-arrow { display:none; }
+.pg-pay-btn.is-loading .pg-pay-spinner { display:block; }
+.pg-pay-btn.is-loading { justify-content:center; pointer-events:none; opacity:.75; }
+.pg-footnote {
+  display:flex; align-items:center; justify-content:center;
+  gap:6px; margin-top:14px; font-size:.72rem; color:#35334a;
+}
+
+@media(max-width:860px){ .pg-grid{grid-template-columns:1fr;gap:36px} .pg-right{position:static} .card-scene{max-width:420px} }
+@media(max-width:500px){ .pg-pago{padding:28px 14px 60px} .card-scene{max-width:100%} .pg-field-row{grid-template-columns:1fr;gap:0} .pg-form-card{padding:24px 18px} .pg-form-header{flex-direction:column;align-items:flex-start;gap:10px} }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pg-pago">
+<div class="pg-grid">
+
+  <!-- ══ LEFT ══ -->
+  <div class="pg-left">
+    <div>
+      <p class="pg-eyebrow">Tienda Prado · Pago seguro</p>
+      <h1 class="pg-title">Completa tu<br><strong>pago</strong></h1>
+    </div>
+
+    <!-- CARD PREVIEW -->
+    <div class="card-scene">
+      <div class="card-flipper" id="cardFlipper">
+
+        <!-- FRONT -->
+        <div class="card-face card-face-front">
+          <img src="/imagenes/bankcard.png" alt="tarjeta" class="card-img">
+
+          <!-- Cover the printed "PRADO TIENDA" on the image -->
+          <div class="cover-name"></div>
+
+          <!-- Live data -->
+          <div class="card-data">
+
+            <div class="cf-number">
+              <span class="cf-seg" id="cs0">••••</span>
+              <span class="cf-seg" id="cs1">••••</span>
+              <span class="cf-seg" id="cs2">••••</span>
+              <span class="cf-seg" id="cs3">••••</span>
+            </div>
+
+            <div class="cf-exp-wrap">
+              <span class="cf-micro">Exp. End</span>
+              <span class="cf-val" id="cdExpLeft">MM / YY</span>
+            </div>
+
+            <div class="cf-name-wrap">
+              <span class="cf-micro">Titular</span>
+              <span class="cf-val" id="cdName">NOMBRE APELLIDO</span>
+            </div>
+
+            <div class="cf-vence-wrap">
+              <span class="cf-micro">Vence</span>
+              <span class="cf-val" id="cdVence">MM/AA</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="card-face card-face-back">
+          <img src="/imagenes/bankcard.png" alt="dorso" class="card-img card-img-back">
+          <div class="card-back-glass">
+            <div class="cb-stripe"></div>
+            <div class="cb-sig-area">
+              <div class="cb-sig-tape"></div>
+              <div class="cb-cvv-box">
+                <span class="cb-cvv-val" id="cdCvv">•••</span>
+              </div>
+              <span class="cb-cvv-label">CVV</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="pg-summary">
+      <p class="pg-summary-title">Resumen del pedido</p>
+      <div class="pg-summary-lines">
+        <div class="pg-sum-line"><span>Subtotal</span><span>{{ subtotal }}€</span></div>
+        <div class="pg-sum-line"><span>IVA (21%)</span><span>{{ iva }}€</span></div>
+        <div class="pg-sum-line"><span>Envío</span><span>{{ envio }}€</span></div>
+        <div class="pg-sum-line is-total"><span>Total</span><span>{{ total }}€</span></div>
+      </div>
+      <div class="pg-trust">
+        <span class="pg-trust-pill">🔒 SSL 256-bit</span>
+        <span class="pg-trust-pill">✔ Pago verificado</span>
+        <span class="pg-trust-pill">🛡 Datos protegidos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT ══ -->
+  <div class="pg-right">
+    <div class="pg-form-card">
+      <div class="pg-form-header">
+        <h2 class="pg-form-title">Datos de pago</h2>
+        <div class="pg-cards-accepted">
+          <span class="pg-card-pill">VISA</span>
+          <span class="pg-card-pill">MC</span>
+          <span class="pg-card-pill">AMEX</span>
+        </div>
+      </div>
+
+      <form id="paymentForm" action="/procesar-pago" method="POST" novalidate autocomplete="off">
+
+        <div class="pg-field" id="fg-num">
+          <label class="pg-label" for="cardNumber">Número de tarjeta</label>
+          <div class="pg-input-wrap">
+            <input type="text" id="cardNumber" name="numero_tarjeta" class="pg-input"
+              placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" required>
+            <span class="pg-input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+          </div>
+          <span class="pg-field-err">Introduce exactamente 16 dígitos</span>
+        </div>
+
+        <div class="pg-field" id="fg-name">
+          <label class="pg-label" for="titular">Nombre del titular</label>
+          <div class="pg-input-wrap">
+            <input type="text" id="titular" name="titular" class="pg-input"
+              placeholder="Como aparece en la tarjeta"
+              value="{{ nombre or '' }}" required>
+            <span class="pg-input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+          </div>
+          <span class="pg-field-err">Introduce el nombre del titular</span>
+        </div>
+
+        <div class="pg-field-row">
+          <div class="pg-field" id="fg-month">
+            <label class="pg-label" for="expMonth">Mes</label>
+            <div class="pg-input-wrap">
+              <select id="expMonth" name="exp_month" class="pg-select" required>
+                <option value="" disabled selected>Mes</option>
+                <option value="01">01 — Enero</option>
+                <option value="02">02 — Febrero</option>
+                <option value="03">03 — Marzo</option>
+                <option value="04">04 — Abril</option>
+                <option value="05">05 — Mayo</option>
+                <option value="06">06 — Junio</option>
+                <option value="07">07 — Julio</option>
+                <option value="08">08 — Agosto</option>
+                <option value="09">09 — Septiembre</option>
+                <option value="10">10 — Octubre</option>
+                <option value="11">11 — Noviembre</option>
+                <option value="12">12 — Diciembre</option>
+              </select>
+              <span class="pg-input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <span class="pg-field-err">Selecciona el mes</span>
+          </div>
+
+          <div class="pg-field" id="fg-year">
+            <label class="pg-label" for="expYear">Año</label>
+            <div class="pg-input-wrap">
+              <select id="expYear" name="exp_year" class="pg-select" required>
+                <option value="" disabled selected>Año</option>
+              </select>
+              <span class="pg-input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg></span>
+            </div>
+            <span class="pg-field-err">Selecciona el año</span>
+          </div>
+        </div>
+
+        <div class="pg-field" id="fg-cvv">
+          <label class="pg-label" for="cvv">CVV
+            <span style="font-size:.65rem;color:#3a3a55;text-transform:none;letter-spacing:0;font-weight:400"> — 3 dígitos al dorso</span>
+          </label>
+          <div class="pg-input-wrap">
+            <input type="password" id="cvv" name="cvv" class="pg-input"
+              placeholder="•••" maxlength="3" inputmode="numeric" required>
+            <span class="pg-input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          </div>
+          <span class="pg-field-err">CVV de 3 dígitos requerido</span>
+        </div>
+
+        <input type="hidden" id="fecha_expiracion" name="fecha_expiracion" value="">
+        <input type="hidden" name="direccion_facturacion" value="N/A">
+        <input type="hidden" name="codigo_postal" value="00000">
+
+        <button type="submit" class="pg-pay-btn" id="payBtn">
+          <span class="pg-pay-label">Pagar ahora</span>
+          <span class="pg-pay-amount">{{ total }}€</span>
+          <span class="pg-pay-arrow">→</span>
+          <span class="pg-pay-spinner"></span>
+        </button>
+
+        <p class="pg-footnote">🔒 Tu información está cifrada con TLS</p>
+      </form>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var flipper   = document.getElementById('cardFlipper');
+  var segs      = [0,1,2,3].map(function(i){ return document.getElementById('cs'+i); });
+  var cdName    = document.getElementById('cdName');
+  var cdExpLeft = document.getElementById('cdExpLeft');
+  var cdVence   = document.getElementById('cdVence');
+  var cdCvv     = document.getElementById('cdCvv');
+
+  var inNum     = document.getElementById('cardNumber');
+  var inName    = document.getElementById('titular');
+  var selMonth  = document.getElementById('expMonth');
+  var selYear   = document.getElementById('expYear');
+  var inCvv     = document.getElementById('cvv');
+  var hiddenExp = document.getElementById('fecha_expiracion');
+  var form      = document.getElementById('paymentForm');
+  var payBtn    = document.getElementById('payBtn');
+
+  /* ── Year dropdown ── */
+  var cy = new Date().getFullYear();
+  for(var y = cy; y <= cy+12; y++){
+    var o = document.createElement('option');
+    o.value = String(y).slice(-2);
+    o.textContent = y;
+    selYear.appendChild(o);
+  }
+
+  /* ── Seed name ── */
+  if(inName.value.trim()) cdName.textContent = inName.value.trim().toUpperCase();
+
+  /* ── Number ── */
+  function renderSegs(raw){
+    segs.forEach(function(el,i){
+      var chunk = raw.substring(i*4, i*4+4);
+      if(!chunk){
+        el.textContent = '••••';
+        el.className = 'cf-seg';
+      } else {
+        el.textContent = chunk + '••••'.substring(0, 4-chunk.length);
+        el.className = 'cf-seg typed';
+      }
+    });
+  }
+
+  inNum.addEventListener('input', function(){
+    var raw = this.value.replace(/\D/g,'').substring(0,16);
+    this.value = raw.match(/.{1,4}/g) ? raw.match(/.{1,4}/g).join(' ') : raw;
+    renderSegs(raw);
+    err('num', false); // always clear while typing
+  });
+  inNum.addEventListener('focus', function(){
+    err('num', false);
+    segs.forEach(function(el){ el.classList.add('active'); });
+  });
+  inNum.addEventListener('blur', function(){
+    segs.forEach(function(el){ el.classList.remove('active'); });
+    var raw = inNum.value.replace(/\s/g,'');
+    // Only show error if user typed something incomplete (not empty, not full 16)
+    if(raw.length > 0 && raw.length < 16){
+      err('num', true);
+    }
+  });
+
+  /* ── Name ── */
+  inName.addEventListener('input', function(){
+    cdName.textContent = this.value.trim().toUpperCase() || 'NOMBRE APELLIDO';
+    err('name', false);
+  });
+  inName.addEventListener('focus', function(){ cdName.classList.add('active'); });
+  inName.addEventListener('blur',  function(){ cdName.classList.remove('active'); });
+
+  /* ── Expiry ── */
+  function updateExp(){
+    var m = selMonth.value, y = selYear.value;
+    cdExpLeft.textContent = (m||'MM') + ' / ' + (y||'YY');
+    cdVence.textContent   = (m||'MM') + '/' + (y||'AA');
+    hiddenExp.value = (m && y) ? m+'/'+y : '';
+    cdExpLeft.classList.add('active'); cdVence.classList.add('active');
+    setTimeout(function(){ cdExpLeft.classList.remove('active'); cdVence.classList.remove('active'); }, 1400);
+    if(m) err('month', false);
+    if(y) err('year',  false);
+  }
+  selMonth.addEventListener('change', updateExp);
+  selYear.addEventListener('change',  updateExp);
+
+  /* ── CVV + flip ── */
+  inCvv.addEventListener('focus', function(){ flipper.classList.add('is-flipped'); });
+  inCvv.addEventListener('blur',  function(){ flipper.classList.remove('is-flipped'); });
+  inCvv.addEventListener('input', function(){
+    var v = this.value.replace(/\D/g,'').substring(0,3);
+    this.value = v;
+    cdCvv.textContent = v ? v.replace(/./g,'•') : '•••';
+    err('cvv', false);
+  });
+
+  /* ── Error helpers ── */
+  function err(id, show){
+    var fg = document.getElementById('fg-'+id);
+    if(fg) fg.classList.toggle('has-error', show);
+  }
+
+  /* ── Validate on submit ── */
+  function validate(){
+    var ok = true;
+    var cardNumberRaw = inNum.value.replace(/\s/g,''); // Remove spaces for validation
+    if(cardNumberRaw.length !== 16 || !/^\d{16}$/.test(cardNumberRaw)) { 
+      err('num',true);   ok=false; 
+    }
+    if(inName.value.trim().length < 2)                    { err('name',true);  ok=false; }
+    if(!selMonth.value)                                   { err('month',true); ok=false; }
+    if(!selYear.value)                                    { err('year',true);  ok=false; }
+    if(!/^\d{3}$/.test(inCvv.value))                     { err('cvv',true);   ok=false; }
+    return ok;
+  }
+
+  form.addEventListener('submit', function(e){
+    if(selMonth.value && selYear.value) hiddenExp.value = selMonth.value+'/'+selYear.value;
+    if(!validate()){ e.preventDefault(); return; }
+    payBtn.classList.add('is-loading'); payBtn.disabled = true;
+  });
+
+})();
+</script>
+{% endblock %}
