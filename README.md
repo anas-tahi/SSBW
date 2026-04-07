@@ -32,12 +32,29 @@ Tienda Prado es una plataforma sofisticada de e-commerce para la venta de arte e
 - **Gestión de Sesiones**: Middleware de sesiones Express
 
 ## 🚀 **Para Empezar**
+
+### 🐳 **Modo Docker (Recomendado)**
+```bash
+1. Clona el repositorio
+2. Inicia con Docker: `docker-compose up --build`
+3. Visita: `http://localhost:3000`
+```
+
+### 💻 **Modo Sin Docker**
+```bash
 1. Clona el repositorio
 2. Instala dependencias: `npm install`
 3. Configura variables de entorno en `.env`
 4. Ejecuta migraciones de base de datos: `npx prisma migrate dev`
-5. Inicia servidor de desarrollo: `npm run dev`
-6. Visita: `http://localhost:3000`
+5. Puebla base de datos: `npx prisma db seed`
+6. Inicia servidor de desarrollo: `npm run dev`
+7. Visita: `http://localhost:3000`
+```
+
+### 📦 **Datos de Productos**
+- **Fuente**: `/data/products.json` - Datos offline de productos
+- **Seed**: `prisma/seed.ts` - Script para poblar la base de datos
+- **Uso**: Los productos aparecen sin necesidad de Docker
 
 ## 📁 **Estructura del Proyecto**
 ```

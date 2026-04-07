@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "título": "Impresión Jardín Botánico",
+    "descripción": "Una hermosa impresión botánica que captura la esencia de la naturaleza con colores vibrantes y detalles finos. Perfecta para espacios que necesitan un toque natural y elegante.",
+    "precio": 89.99,
+    "imagen": "impresion_jardin_botanico.jpg"
+  },
+  {
+    "id": 2,
+    "título": "Arte Urbano Contemporáneo",
+    "descripción": "Pieza contemporánea que refleja la energía y dinamismo de la vida urbana moderna. Ideal para coleccionistas que aprecian el arte conceptual.",
+    "precio": 124.99,
+    "imagen": "arte_urbano_contemporaneo.jpg"
+  },
+  {
+    "id": 3,
+    "título": "Paisaje Montañoso Alpino",
+    "descripción": "Paisaje impresionista de los Alpes que evoca tranquilidad y majestuosidad natural. Una obra que transporta al espectador a montañas serenas.",
+    "precio": 156.99,
+    "imagen": "paisaje_montanioso_alpino.jpg"
+  },
+  {
+    "id": 4,
+    "título": "Abstracto Geométrico",
+    "descripción": "Composición abstracta con formas geométricas que juega con la perspectiva y el color. Perfecta para espacios modernos y minimalistas.",
+    "precio": 78.99,
+    "imagen": "abstracto_geometrico.jpg"
+  },
+  {
+    "id": 5,
+    "título": "Retrato Art Deco",
+    "descripción": "Elegante retrato estilo Art Decó que combina glamour y sofisticación. Pieza única que añade un toque vintage de lujo.",
+    "precio": 189.99,
+    "imagen": "retrato_art_deco.jpg"
+  },
+  {
+    "id": 6,
+    "título": "Marina Costera",
+    "descripción": "Vista marina impresionista que captura la luz y movimiento del océano. Ideal para crear ambiente de calma y serenidad.",
+    "precio": 134.99,
+    "imagen": "marina_costera.jpg"
+  },
+  {
+    "id": 7,
+    "título": "Naturaleza Muerta Floral",
+    "descripción": "Composición clásica de naturaleza muerta con flores frescas y colores vibrantes. Obra atemporal que celebra la belleza floral.",
+    "precio": 98.99,
+    "imagen": "naturaleza_muerta_floral.jpg"
+  },
+  {
+    "id": 8,
+    "título": "Arte Digital Minimalista",
+    "descripción": "Obra digital minimalista que explora la simplicidad y la forma pura. Perfecta para estéticas contemporáneas y limpias.",
+    "precio": 67.99,
+    "imagen": "arte_digital_minimalista.jpg"
+  },
+  {
+    "id": 9,
+    "título": "Acuarela Marina",
+    "descripción": "Delicada acuarela que captura la belleza del mar con transparencias y colores suaves. Pieza única que evoca frescura y paz.",
+    "precio": 112.99,
+    "imagen": "acuarela_marina.jpg"
+  },
+  {
+    "id": 10,
+    "título": "Naturaleza Exótica Tropical",
+    "descripción": "Vibrante representación de flora tropical exótica con colores intensos y detalles exuberantes. Ideal para espacios energéticos.",
+    "precio": 145.99,
+    "imagen": "naturaleza_exotica_tropical.jpg"
+  },
+  {
+    "id": 11,
+    "título": "Paisaje Desértico",
+    "descripción": "Paisaje desértico impresionista que juega con la luz y las sombras. Obra que transmite paz y vastedad.",
+    "precio": 89.99,
+    "imagen": "paisaje_desertico.jpg"
+  },
+  {
+    "id": 12,
+    "título": "Paisaje Rural Campestre",
+    "descripción": "Escena rural campestre que captura la tranquilidad del campo. Perfecta para quienes aman la naturaleza serena.",
+    "precio": 123.99,
+    "imagen": "paisaje_rural_campestre.jpg"
+  },
+  {
+    "id": 13,
+    "título": "Pintura Floral Impresionista",
+    "descripción": "Obra impresionista con flores que captura la luz y el color de la naturaleza. Pieza llena de vida y movimiento.",
+    "precio": 167.99,
+    "imagen": "pintura_floral_impresionista.jpg"
+  },
+  {
+    "id": 14,
+    "título": "Fotografía Arquitectónica",
+    "descripción": "Fotografía artística de arquitectura moderna que juega con líneas y perspectivas. Ideal para espacios contemporáneos.",
+    "precio": 98.99,
+    "imagen": "fotografia_arquitectonica.jpg"
+  },
+  {
+    "id": 15,
+    "título": "Fotografía Urbana Nocturna",
+    "descripción": "Captura nocturna de la ciudad urbana con luces y reflejos. Obra que transmite la energía urbana después del atardecer.",
+    "precio": 134.99,
+    "imagen": "fotografia_urbana_nocturna.jpg"
+  },
+  {
+    "id": 16,
+    "título": "Arte Geométrico Colorido",
+    "descripción": "Composición geométrica abstracta con colores vibrantes y formas dinámicas. Perfecta para espacios modernos y creativos.",
+    "precio": 76.99,
+    "imagen": "arte_geometrico_colorido.jpg"
+  },
+  {
+    "id": 17,
+    "título": "Arte Minimalista B/N",
+    "descripción": "Obra minimalista en blanco y negro que explora la forma y el contraste. Pieza elegante y atemporal.",
+    "precio": 89.99,
+    "imagen": "arte_minimalista_bn.jpg"
+  },
+  {
+    "id": 18,
+    "título": "Arte Pop Contemporáneo",
+    "descripción": "Pieza pop contemporánea con colores vivos y estilo gráfico. Ideal para espacios jóvenes y dinámicos.",
+    "precio": 92.99,
+    "imagen": "arte_pop_contemporaneo.jpg"
+  },
+  {
+    "id": 19,
+    "título": "Arte Abstracto Moderno",
+    "descripción": "Composición abstracta moderna con texturas y colores profundos. Obra que invita a la reflexión y contemplación.",
+    "precio": 156.99,
+    "imagen": "arte_abstracto_moderno.jpg"
+  },
+  {
+    "id": 20,
+    "título": "Arte Digital Minimalista",
+    "descripción": "Obra digital minimalista con formas limpias y colores suaves. Perfecta para estéticas contemporáneas y sofisticadas.",
+    "precio": 78.99,
+    "imagen": "arte_digital_minimalista.jpg"
+  }
+]
