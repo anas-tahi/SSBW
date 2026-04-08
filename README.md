@@ -89,4 +89,4 @@ SSBW/
 
 ---
 
-**🎨 Tienda Prado - Donde el Arte Encuentra la Tecnología**
+**🎨 Tienda Prado - Galería de Arte E-commerce**
