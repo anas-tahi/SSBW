@@ -203,42 +203,83 @@ router.get('/register', (req: Request, res: Response) => {
 // POST /register - Process registration
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { email, nombre, contraseña } = req.body;
+    const { 
+      email, 
+      nombre, 
+      contraseña, 
+      telefono, 
+      direccion, 
+      fecha_nacimiento, 
+      genero, 
+      biografia, 
+      idioma, 
+      newsletter,
+      countryCode 
+    } = req.body;
     
     logger.debug(`Registration attempt for email: ${email}`);
-    console.log('📝 Registration data:', { email, nombre, hasPassword: !!contraseña });
+    console.log('Registration data:', { 
+      email, 
+      nombre, 
+      hasPassword: !!contraseña,
+      telefono,
+      direccion,
+      fecha_nacimiento,
+      genero,
+      newsletter
+    });
     
     // Validate input data
     const validationErrors = validateRegistrationData(req.body);
     if (validationErrors.length > 0) {
-      console.log('❌ Validation errors:', validationErrors);
+      console.log('Validation errors:', validationErrors);
       return res.render('register.njk', {
         title: 'Registrarse - Tienda Prado',
         error: true,
         message: validationErrors.join(', '),
         email: email,
-        nombre: nombre
+        nombre: nombre,
+        telefono: telefono,
+        direccion: direccion,
+        fecha_nacimiento: fecha_nacimiento,
+        genero: genero,
+        biografia: biografia,
+        idioma: idioma,
+        newsletter: newsletter
       });
     }
     
     // Check if user already exists
-    console.log('🔍 Checking if user exists:', email);
+    console.log('Checking if user exists:', email);
     const existingUser = await prisma.usuario.findUnique({
       where: { email: email }
     });
     
     if (existingUser) {
-      console.log('❌ User already exists:', email);
+      console.log('User already exists:', email);
       return res.render('register.njk', {
         title: 'Registrarse - Tienda Prado',
         error: true,
         message: 'El email ya está registrado',
         email: email,
-        nombre: nombre
+        nombre: nombre,
+        telefono: telefono,
+        direccion: direccion,
+        fecha_nacimiento: fecha_nacimiento,
+        genero: genero,
+        biografia: biografia,
+        idioma: idioma,
+        newsletter: newsletter
       });
     }
     
-    // Create user with bcrypt password hashing
+    // Process phone number with country code
+    let fullTelefono = telefono;
+    if (telefono && countryCode) {
+      fullTelefono = `${countryCode} ${telefono}`;
+    }
+    
+    // Create user with bcrypt password hashing and profile information
     console.log('Creating new user...');
     const hashedPassword = await bcrypt.hash(contraseña, 12);
     const usuario = await prisma.usuario.create({
@@ -246,6 +287,13 @@ router.post('/register', async (req: Request, res: Response) => {
         email,
         nombre,
         contraseña: hashedPassword,
+        telefono: fullTelefono || null,
+        direccion: direccion?.trim() || null,
+        fecha_nacimiento: fecha_nacimiento ? new Date(fecha_nacimiento) : null,
+        genero: genero || null,
+        biografia: biografia?.trim() || null,
+        idioma: idioma || 'es',
+        newsletter: newsletter === 'on' || newsletter === true,
         admin: false // New users are not admins by default
       }
     });

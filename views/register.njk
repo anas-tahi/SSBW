@@ -418,27 +418,109 @@ body {
     box-shadow: 0 10px 25px rgba(76, 175, 80, 0.2);
 }
 
+/* Phone Input Styles */
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.phone-input-wrapper:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-1px);
+}
+
+.phone-input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 
+        0 0 0 4px rgba(76, 175, 80, 0.1),
+        0 10px 30px rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+.phone-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.phone-input {
+    width: 100%;
+    padding: 16px 20px 16px 20px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.phone-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.phone-input:focus {
+    outline: none;
+    background: transparent;
+}
+
+.phone-icon {
+    position: absolute;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.phone-input-wrapper:focus-within .phone-icon {
+    color: #4CAF50;
+    transform: scale(1.1);
+}
+
+/* Success/Error States for Phone Input */
+.phone-input-wrapper.success {
+    border-color: rgba(76, 175, 80, 0.5);
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.phone-input-wrapper.success .phone-icon {
+    color: #4CAF50;
+}
+
+.phone-input-wrapper.error {
+    border-color: rgba(244, 67, 54, 0.5);
+    background: rgba(244, 67, 54, 0.05);
+}
+
+.phone-input-wrapper.error .phone-icon {
+    color: #f44336;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-    .auth-card {
-        padding: 40px 30px;
-        margin: 20px;
-        border-radius: 24px;
+    .phone-input-wrapper {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
     }
     
-    .auth-title {
-        font-size: 2.2rem;
+    .country-select {
+        min-width: auto;
+        text-align: center;
     }
     
-    .auth-icon {
-        width: 70px;
-        height: 70px;
-        font-size: 2rem;
-    }
-    
-    .auth-submit-btn {
-        padding: 16px;
-        font-size: 0.95rem;
+    .phone-input {
+        padding: 16px 50px 16px 20px;
     }
 }
 
@@ -555,16 +637,62 @@ body {
 
             <div class="form-group">
                 <label for="telefono" class="form-label">Teléfono</label>
-                <div class="input-wrapper">
-                    <input type="tel" 
-                           id="telefono" 
-                           name="telefono" 
-                           class="form-input" 
-                           placeholder="+34 912 345 678"
-                           value="{{ telefono or '' }}">
-                    <span class="input-icon">
-                        <i class="bi bi-telephone"></i>
-                    </span>
+                <div class="phone-input-wrapper">
+                    <select id="countryCode" name="countryCode" class="country-select">
+                        <option value="+34">+34</option>
+                        <option value="+33">+33</option>
+                        <option value="+212">+212</option>
+                        <option value="+44">+44</option>
+                        <option value="+49">+49</option>
+                        <option value="+39">+39</option>
+                        <option value="+31">+31</option>
+                        <option value="+41">+41</option>
+                        <option value="+351">+351</option>
+                        <option value="+46">+46</option>
+                        <option value="+47">+47</option>
+                        <option value="+45">+45</option>
+                        <option value="+358">+358</option>
+                        <option value="+48">+48</option>
+                        <option value="+43">+43</option>
+                        <option value="+32">+32</option>
+                        <option value="+352">+352</option>
+                        <option value="+353">+353</option>
+                        <option value="+1">+1</option>
+                        <option value="+61">+61</option>
+                        <option value="+81">+81</option>
+                        <option value="+82">+82</option>
+                        <option value="+86">+86</option>
+                        <option value="+91">+91</option>
+                        <option value="+20">+20</option>
+                        <option value="+966">+966</option>
+                        <option value="+971">+971</option>
+                        <option value="+972">+972</option>
+                        <option value="+90">+90</option>
+                        <option value="+7">+7</option>
+                        <option value="+375">+375</option>
+                        <option value="+380">+380</option>
+                        <option value="+40">+40</option>
+                        <option value="+421">+421</option>
+                        <option value="+420">+420</option>
+                        <option value="+36">+36</option>
+                        <option value="+381">+381</option>
+                        <option value="+385">+385</option>
+                        <option value="+386">+386</option>
+                        <option value="+389">+389</option>
+                        <option value="+359">+359</option>
+                        <option value="+30">+30</option>
+                    </select>
+                    <div class="phone-input-group">
+                        <input type="tel" 
+                               id="telefono" 
+                               name="telefono" 
+                               class="form-input phone-input" 
+                               placeholder="912345678 (9 dígitos)"
+                               value="{{ telefono or '' }}">
+                        <span class="input-icon phone-icon">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
             
@@ -608,7 +736,7 @@ body {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.auth-form');
-    const inputs = document.querySelectorAll('.form-input');
+    const inputs = document.querySelectorAll('.form-input, .phone-input');
     const submitBtn = document.querySelector('.auth-submit-btn');
     
     // Enhanced input interactions
@@ -635,6 +763,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove previous states
         field.classList.remove('success', 'error');
         
+        // Handle phone input wrapper for phone validation
+        const phoneWrapper = field.closest('.phone-input-wrapper');
+        if (phoneWrapper) {
+            phoneWrapper.classList.remove('success', 'error');
+        }
+        
         if (value === '') return;
         
         let isValid = true;
@@ -647,25 +781,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
                 break;
             case 'telefono':
-                isValid = /^[\d\s\+\-\(\)]*$/.test(value) && (value.length === 0 || value.length >= 9);
+                // Phone validation - exactly 9 digits
+                isValid = /^\d{9}$/.test(value);
+                console.log('Phone validation:', value, isValid); // Debug log
                 break;
             case 'contraseña':
                 isValid = value.length >= 3;
                 break;
         }
         
-        field.classList.add(isValid ? 'success' : 'error');
+        if (phoneWrapper) {
+            phoneWrapper.classList.add(isValid ? 'success' : 'error');
+        } else {
+            field.classList.add(isValid ? 'success' : 'error');
+        }
     }
     
     // Form submission
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Validate all fields
+        // Get phone number with country code
+        const countryCode = document.getElementById('countryCode').value;
+        const phoneNumber = document.getElementById('telefono').value.trim();
+        
+        // Validate the original phone number (without country code) first
+        const phoneInput = document.getElementById('telefono');
+        const originalPhoneValue = phoneNumber;
+        
+        // Check if phone number is valid (9 digits)
+        if (!/^\d{9}$/.test(originalPhoneValue)) {
+            phoneInput.classList.add('error');
+            phoneInput.closest('.phone-input-wrapper').classList.add('error');
+            return;
+        }
+        
+        const fullPhoneNumber = countryCode + ' ' + phoneNumber;
+        
+        // Update the phone input value before submission
+        document.getElementById('telefono').value = fullPhoneNumber;
+        
+        // Validate all other fields (skip phone since we already validated it)
         let isFormValid = true;
         inputs.forEach(input => {
+            if (input.id === 'telefono') return; // Skip phone validation
+            
             validateField(input);
-            if (input.classList.contains('error')) {
+            const phoneWrapper = input.closest('.phone-input-wrapper');
+            if (phoneWrapper && phoneWrapper.classList.contains('error')) {
+                isFormValid = false;
+            } else if (input.classList.contains('error')) {
                 isFormValid = false;
             }
         });

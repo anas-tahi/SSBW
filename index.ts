@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 
 import productosRouter from './routes/productos';
 import usuariosRouter from './routes/usuarios';
+import profileRouter from './routes/profile';
 // import apiProductosRouter from './routes/api.productos';
 
 import logger from './logger.js';
@@ -123,6 +124,9 @@ app.use('/', productosRouter);
 
 // Auth routes
 app.use('/', usuariosRouter);
+
+// Profile routes
+app.use('/', profileRouter);
 
 
 
