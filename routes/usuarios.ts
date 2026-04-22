@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import bcrypt from 'bcrypt';
 import logger from '../logger.js';
+import { sendWelcomeEmail } from '../services/email';
 
 // Initialize Prisma Client with SQLite adapter
 const adapter = new PrismaBetterSqlite3({
@@ -300,6 +301,14 @@ router.post('/register', async (req: Request, res: Response) => {
     
     console.log('✅ User created successfully:', usuario.email);
     logger.info(`User registered successfully: ${email}`);
+    
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(email, nombre);
+      logger.info(`Welcome email sent to ${email}`);
+    } catch (emailError) {
+      logger.error(`Failed to send welcome email to ${email}:`, emailError);
+    }
     
     // Redirect to login page with success message
     res.render('login.njk', {

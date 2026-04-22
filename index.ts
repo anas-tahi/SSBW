@@ -13,7 +13,8 @@ const __dirname = path.dirname(__filename);
 import productosRouter from './routes/productos';
 import usuariosRouter from './routes/usuarios';
 import profileRouter from './routes/profile';
-// import apiProductosRouter from './routes/api.productos';
+import uploadRouter from './routes/upload';
+import apiProductosRouter from './routes/api.productos';
 
 import logger from './logger.js';
 
@@ -142,7 +143,10 @@ app.use((req: any, res, next) => {
 });
 
 // API routes
-// app.use('/api', apiProductosRouter);
+app.use('/api', apiProductosRouter);
+
+// Upload routes
+app.use('/', uploadRouter);
 
 // Productos routes
 app.use('/', productosRouter);
