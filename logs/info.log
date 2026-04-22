@@ -952,3 +952,4 @@
 {"level":"info","message":"Loaded 20 products for homepage","service":"tienda-prado","timestamp":"2026-04-22 06:22:40"}
 {"level":"info","message":"API: Loaded 1 cart items","service":"tienda-prado","timestamp":"2026-04-22 06:22:40"}
 {"level":"info","message":"🚀 Servidor corriendo en http://localhost:3000","service":"tienda-prado","timestamp":"2026-04-22 06:25:02"}
+{"level":"info","message":"🚀 Servidor corriendo en http://localhost:3000","service":"tienda-prado","timestamp":"2026-04-22 06:25:08"}
