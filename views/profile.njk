@@ -709,7 +709,7 @@ body {
             <!-- Header -->
             <div class="profile-header">
                 <div class="profile-icon">
-                    <i class="bi bi-person-gear"></i>
+                    <i class="bi bi-person-circle"></i>
                 </div>
                 <h1 class="profile-title">Mi Perfil</h1>
                 <p class="profile-subtitle">Gestiona tu información personal</p>
@@ -745,8 +745,8 @@ body {
                 <!-- Basic Information Section -->
                 <div class="form-section">
                     <div class="section-title">
-                        <i class="bi bi-person"></i>
-                        Información Básica
+                        <i class="bi bi-person-circle"></i>
+                        Información Personal
                     </div>
                     
                     <div class="form-row">
@@ -831,7 +831,7 @@ body {
                                     <option value="+359">BG +359</option>
                                     <option value="+30">GR +30</option>
                                 </select>
-                                <div class="selected-flag" id="selectedFlag">ES</div>
+                                <div class="selected-flag" id="selectedFlag">{{ user.telefono and user.telefono.toString().split(' ')[0] or 'ES' }}</div>
                             </div>
                             <div class="phone-input-group">
                                 <input type="tel" 
@@ -839,7 +839,7 @@ body {
                                        name="telefono" 
                                        class="form-input phone-input" 
                                        placeholder="912345678 (9 dígitos)"
-                                       value="{{ user.telefono or '' }}">
+                                       value="{{ user.telefono and user.telefono.toString().split(' ')[1] or '' }}">
                                 <span class="input-icon phone-icon">
                                     <i class="bi bi-telephone"></i>
                                 </span>
@@ -862,7 +862,7 @@ body {
                                        id="fecha_nacimiento" 
                                        name="fecha_nacimiento" 
                                        class="form-input" 
-                                       value="{{ user.fecha_nacimiento }}">
+                                       value="{{ user.fecha_nacimiento | date('YYYY-MM-DD') or '' }}">
                                 <span class="input-icon">
                                     <i class="bi bi-calendar"></i>
                                 </span>

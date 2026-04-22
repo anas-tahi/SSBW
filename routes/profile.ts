@@ -93,7 +93,9 @@ router.post('/profile', requireAuth, async (req: any, res: express.Response) => 
     // Process phone number with country code
     let fullTelefono = telefono;
     if (telefono && countryCode) {
-      fullTelefono = `${countryCode} ${telefono}`;
+      // Extract only the digits from phone number (remove any existing country code)
+      const phoneDigits = telefono.replace(/\D/g, '').replace(/^(\+?\d{1,3})\s*/, '');
+      fullTelefono = `${countryCode} ${phoneDigits}`;
     }
 
     // Prepare update data
@@ -111,7 +113,8 @@ router.post('/profile', requireAuth, async (req: any, res: express.Response) => 
     // Handle date of birth
     if (fecha_nacimiento) {
       try {
-        updateData.fecha_nacimiento = new Date(fecha_nacimiento);
+        // HTML date input sends yyyy-MM-dd format, no need for complex parsing
+        updateData.fecha_nacimiento = new Date(fecha_nacimiento + 'T00:00:00.000Z');
       } catch (dateError) {
         console.log('Invalid date format, skipping fecha_nacimiento');
       }

@@ -1161,4 +1161,118 @@ router.get('/factura-minimal', (req: any, res: Response) => {
   }
 });
 
+// API Routes for Cart Offcanvas
+
+// GET /api/carrito - Return cart items as JSON
+router.get('/api/carrito', async (req: Request, res: Response) => {
+  try {
+    logger.debug('API: Loading cart items');
+    
+    // Check if user is authenticated
+    if (!req.usuario) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    // Get cart from session
+    const cart = (req.session as any).carrito || [];
+    const total_carrito = (req.session as any).total_carrito || 0;
+    
+    // If cart is empty, return empty array
+    if (!cart || cart.length === 0) {
+      return res.json([]);
+    }
+    
+    // Get product details for each cart item
+    const cartItems = [];
+    for (const item of cart) {
+      try {
+        const product = await prisma.producto.findUnique({
+          where: { id: item.id }
+        });
+        
+        if (product) {
+          cartItems.push({
+            id: product.id,
+            título: product.título,
+            descripción: product.descripción,
+            precio: Number(product.precio),
+            imagen: product.imagen,
+            cantidad: item.cantidad || 1
+          });
+        }
+      } catch (error) {
+        logger.error(`Error fetching product ${item.id}:`, error);
+      }
+    }
+    
+    logger.info(`API: Loaded ${cartItems.length} cart items`);
+    res.json(cartItems);
+    
+  } catch (error: any) {
+    logger.error('API: Error loading cart:', error);
+    res.status(500).json({ error: 'Failed to load cart items' });
+  }
+});
+
+// DELETE /api/carrito/:id - Remove item from cart
+router.delete('/api/carrito/:id', async (req: Request, res: Response) => {
+  try {
+    // Check if user is authenticated
+    if (!req.usuario) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const itemId = parseInt(req.params.id as string);
+    
+    if (isNaN(itemId)) {
+      return res.status(400).json({ error: 'Invalid item ID' });
+    }
+    
+    logger.debug(`API: Removing item ${itemId} from cart`);
+    
+    // Get current cart from session
+    const cart = (req.session as any).carrito || [];
+    
+    // Remove item from cart
+    const itemIndex = cart.findIndex((item: any) => item.id === itemId);
+    
+    if (itemIndex === -1) {
+      return res.status(404).json({ error: 'Item not found in cart' });
+    }
+    
+    // Remove item
+    cart.splice(itemIndex, 1);
+    
+    // Update session
+    (req.session as any).carrito = cart;
+    
+    // Recalculate total
+    let total = 0;
+    for (const item of cart) {
+      const product = await prisma.producto.findUnique({
+        where: { id: item.id }
+      });
+      
+      if (product) {
+        total += Number(product.precio) * (item.cantidad || 1);
+      }
+    }
+    
+    (req.session as any).total_carrito = cart.reduce((sum: number, item: any) => sum + (item.cantidad || 1), 0);
+    
+    logger.info(`API: Removed item ${itemId} from cart. New total: ${total}`);
+    
+    res.json({ 
+      success: true, 
+      message: 'Item removed from cart',
+      cartCount: cart.length,
+      cartTotal: total
+    });
+    
+  } catch (error: any) {
+    logger.error('API: Error removing item from cart:', error);
+    res.status(500).json({ error: 'Failed to remove item from cart' });
+  }
+});
+
 export default router;
