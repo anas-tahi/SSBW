@@ -1,0 +1,19 @@
+---
+interface Props {
+  título: string;
+  texto_precio: string;
+  imagen: string;
+  index: number;
+}
+const { título, texto_precio, imagen, index } = Astro.props;
+---
+
+<a href={`/productos/${index}`} class="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+  <div class="aspect-square overflow-hidden bg-gray-100">
+    <img src={`/images/${imagen}`} alt={título} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x400?text=Tienda+Prado'" />
+  </div>
+  <div class="p-4">
+    <h3 class="text-sm font-medium text-gray-800 line-clamp-2 mb-2">{título}</h3>
+    <p class="text-red-700 font-semibold">{texto_precio}</p>
+  </div>
+</a>

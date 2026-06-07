@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CardProducto from '../components/CardProducto.astro';
+import productos from '../../data/productos.json';
+
+const p = productos.slice(0, 12);
+---
+
+<Layout title="Destacados — Tienda Prado">
+  <div class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+      <section class="mb-10 text-center">
+        <h1 class="font-serif text-5xl text-gray-700 tracking-widest mb-2">Destacados</h1>
+        <p class="text-gray-500">Una selección de nuestros productos más especiales</p>
+      </section>
+      <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {p.map((producto, i) => (
+          <CardProducto título={producto.título} texto_precio={producto.texto_precio} imagen={producto.imagen} index={i} />
+        ))}
+      </section>
+    </div>
+  </div>
+</Layout>

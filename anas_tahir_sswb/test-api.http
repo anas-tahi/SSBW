@@ -1,0 +1,102 @@
+### Tarea 7 — REST API Test File
+### Use with REST Client extension in VSCode
+
+### ─────────────────────────────────────
+### GET all products (default pagination)
+GET http://localhost:3000/api/productos
+
+###
+
+### GET with pagination and sorting
+GET http://localhost:3000/api/productos?page=1&limit=20&sort=id_asc
+
+###
+
+### GET sorted by price ascending
+GET http://localhost:3000/api/productos?page=1&limit=10&sort=precio_asc
+
+###
+
+### GET sorted by price descending
+GET http://localhost:3000/api/productos?page=1&limit=10&sort=precio_desc
+
+###
+
+### GET with text search
+GET http://localhost:3000/api/productos?search=lámina
+
+###
+
+### GET with price filter
+GET http://localhost:3000/api/productos?minPrice=10&maxPrice=50
+
+###
+
+### ─────────────────────────────────────
+### GET product by ID
+GET http://localhost:3000/api/productos/1
+
+###
+
+### GET product that doesn't exist (returns 404)
+GET http://localhost:3000/api/productos/9999
+
+###
+
+### ─────────────────────────────────────
+### POST — create new product
+POST http://localhost:3000/api/productos
+Content-Type: application/json
+
+{
+  "título": "Lámina de prueba",
+  "descripción": "Una descripción de prueba para el producto de test",
+  "precio": 25.50,
+  "imagen": "lamina_prueba.jpg"
+}
+
+###
+
+### POST — missing fields (returns 400)
+POST http://localhost:3000/api/productos
+Content-Type: application/json
+
+{
+  "título": "Sin descripción"
+}
+
+###
+
+### ─────────────────────────────────────
+### PUT — update product (change id as needed)
+PUT http://localhost:3000/api/productos/1
+Content-Type: application/json
+
+{
+  "título": "Título actualizado desde REST Client",
+  "descripción": "Descripción actualizada correctamente",
+  "precio": 35.99
+}
+
+###
+
+### PUT — product not found (returns 404)
+PUT http://localhost:3000/api/productos/9999
+Content-Type: application/json
+
+{
+  "título": "No existe"
+}
+
+###
+
+### ─────────────────────────────────────
+### DELETE — delete product (change id as needed)
+DELETE http://localhost:3000/api/productos/20
+
+###
+
+### DELETE — product not found (returns 404)
+DELETE http://localhost:3000/api/productos/9999
+
+###

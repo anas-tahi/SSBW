@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* Modern Footer Styles */
+        .modern-footer {
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f0f0f0;
+            margin-top: 80px;
+            overflow: hidden;
+        }
+        
+        .footer-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(201, 168, 76, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .footer-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 30px;
+        }
+        
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-brand {
+            max-width: 350px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #c9a84c, #e8d070);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .footer-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f0f0f0, #c9a84c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .footer-tagline {
+            font-size: 1.1rem;
+            color: #b8b8d1;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b8b8d1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .social-link:hover {
+            background: rgba(201, 168, 76, 0.1);
+            border-color: #c9a84c;
+            color: #c9a84c;
+            transform: translateY(-3px);
+        }
+        
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        
+        .footer-heading {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #c9a84c;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-list li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-link {
+            color: #b8b8d1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        
+        .footer-link:hover {
+            color: #c9a84c;
+            transform: translateX(5px);
+        }
+        
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-copyright p {
+            margin: 0 0 8px 0;
+            color: #b8b8d1;
+            font-size: 0.9rem;
+        }
+        
+        .footer-made {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .footer-payment {
+            text-align: right;
+        }
+        
+        .payment-title {
+            display: block;
+            color: #b8b8d1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .payment-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.3rem;
+            color: #b8b8d1;
+        }
+        
+        .payment-icons i {
+            transition: all 0.3s ease;
+        }
+        
+        .payment-icons i:hover {
+            color: #c9a84c;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer Animations */
+        .modern-footer {
+            animation: footerFadeIn 1s ease-out;
+        }
+        
+        @keyframes footerFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer-logo {
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes logoGlow {
+            from {
+                filter: brightness(1);
+            }
+            to {
+                filter: brightness(1.2);
+            }
+        }
+        
+        .footer-bg::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.05) 0%, transparent 70%);
+            top: -300px;
+            left: -200px;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: floatFooter 20s ease-in-out infinite alternate;
+        }
+        
+        .footer-bg::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(120, 119, 198, 0.05) 0%, transparent 70%);
+            bottom: -200px;
+            right: -150px;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatFooter 25s ease-in-out infinite alternate-reverse;
+        }
+        
+        @keyframes floatFooter {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 40px) scale(1.1); }
+            100% { transform: translate(15px, 20px) scale(1); }
+        }
+        
+        /* Responsive Footer */
+        @media (max-width: 768px) {
+            .footer-top {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+            
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer-payment {
+                text-align: center;
+            }
+            
+            .footer-container {
+                padding: 40px 15px 20px;
+            }
+        }
+        
+        /* Cart Offcanvas Styles */
+        .cart-offcanvas {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 400px;
+            height: 100vh;
+            background: #1a1a2e;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1050;
+        }
+        
+        .cart-offcanvas.show {
+            right: 0;
+        }
+        
+        .cart-offcanvas-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .cart-offcanvas-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .cart-offcanvas-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(201, 168, 76, 0.1);
+        }
+        
+        .cart-header h3 {
+            margin: 0;
+            color: #c9a84c;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .cart-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #c9a84c;
+        }
+        
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .cart-loading, .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .cart-loading i, .cart-empty i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .cart-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+        
+        .cart-item {
+            background: transparent;
+            border: none;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .cart-item-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(201, 168, 76, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .cart-item-image {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-item-wrapper:hover .cart-item-image img {
+            transform: scale(1.1);
+        }
+        
+        .cart-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .cart-item-wrapper:hover .cart-item-overlay {
+            opacity: 1;
+        }
+        
+        .cart-item-delete {
+            background: rgba(201, 168, 76, 0.9);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .cart-item-delete:hover {
+            background: #c9a84c;
+            transform: scale(1.1);
+        }
+        
+        .cart-item-info {
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .cart-item-title {
+            margin: 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 2.6em;
+        }
+        
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .cart-total span:first-child {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .cart-total span:last-child {
+            color: #c9a84c;
+            font-size: 1.4rem;
+        }
+        
+        .cart-checkout {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #c9a84c, #d4af37);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0f;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(201, 168, 76, 0.3);
+        }
+        
+        .cart-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #c9a84c, #d4af37);
+            border: none;
+            border-radius: 50%;
+            color: #0a0a0f;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(201, 168, 76, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .cart-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(201, 168, 76, 0.4);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f44336;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 50%;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cart-offcanvas {
+                width: 100vw;
+                right: -100vw;
+            }
+
+            .cart-items {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+                padding: 8px;
+            }
+
+            .cart-item-title {
+                font-size: 0.75rem;
+            }
+
+            .cart-item-info {
+                padding: 8px;
+            }
+
+            .cart-button {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎨 Tienda Prado</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/buscar">Buscar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contacto">Contacto</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <!-- Cart Section - Only show if logged in -->
+                    {% if usuario %}
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link position-relative" id="navCartBtn" onclick="document.getElementById('cartButton').click()">
+                            <i class="bi bi-cart3"></i>
+                            Carrito
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="navCartCount" style="display: none; font-size: 0.7rem; padding: 0.2rem 0.5rem;">0</span>
+                        </button>
+                    </li>
+                    {% endif %}
+
+                    {% if usuario %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>
+                                {{ usuario }}
+                                {% if admin %}
+                                    <i class="bi bi-shield-check ms-1 text-warning"></i>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><h6 class="dropdown-header">
+                                    <i class="bi bi-person me-2"></i>{{ email }}
+                                </h6></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/profile">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a></li>
+                                {% if admin %}
+                                    <li><a class="dropdown-item" href="/admin">
+                                        <i class="bi bi-gear me-2"></i>Panel Admin
+                                    </a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="/logout">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">
+                                <i class="bi bi-person-plus me-1"></i>Registrarse
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <!-- Animated Background -->
+        <div class="footer-bg"></div>
+        
+        <!-- Footer Content -->
+        <div class="footer-container">
+            <!-- Top Section -->
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="bi bi-palette-fill"></i>
+                        <span class="footer-title">Tienda Prado</span>
+                    </div>
+                    <p class="footer-tagline">Galería de Arte Impreso de Alta Calidad</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Tienda</h4>
+                        <ul class="footer-list">
+                            <li><a href="/" class="footer-link">Inicio</a></li>
+                            <li><a href="/buscar" class="footer-link">Buscar</a></li>
+                            <li><a href="/contacto" class="footer-link">Contacto</a></li>
+                            <li><a href="/acerca" class="footer-link">Acerca de</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Ayuda</h4>
+                        <ul class="footer-list">
+                            <li><a href="#" class="footer-link">FAQ</a></li>
+                            <li><a href="#" class="footer-link">Envíos</a></li>
+                            <li><a href="#" class="footer-link">Devoluciones</a></li>
+                            <li><a href="#" class="footer-link">Términos</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Contacto</h4>
+                        <ul class="footer-list">
+                            <li><a href="mailto:info@tiendaprado.com" class="footer-link">info@tiendaprado.com</a></li>
+                            <li><a href="tel:+34912345678" class="footer-link">+34 912 345 678</a></li>
+                            <li><a href="#" class="footer-link">Madrid, España</a></li>
+                            <li><a href="#" class="footer-link">Lun-Sáb: 10:00-20:00</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Section -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="footer-copyright">
+                        <p>&copy; 2026 Tienda Prado → Impresiones. Todos los derechos reservados.</p>
+                        <p class="footer-made">Hecho con <i class="bi bi-heart-fill text-danger"></i> para amantes del arte</p>
+                    </div>
+                    
+                    <div class="footer-payment">
+                        <span class="payment-title">Métodos de pago:</span>
+                        <div class="payment-icons">
+                            <i class="bi bi-credit-card-fill"></i>
+                            <i class="bi bi-paypal"></i>
+                            <i class="bi bi-apple"></i>
+                            <i class="bi bi-google"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Offcanvas -->
+<div class="cart-offcanvas-backdrop" id="cartBackdrop"></div>
+<div class="cart-offcanvas" id="cartOffcanvas">
+    <div class="cart-offcanvas-content">
+        <div class="cart-header">
+            <h3><i class="bi bi-cart3 me-2"></i>Mi Carrito</h3>
+            <button class="cart-close" id="cartClose">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="cart-body">
+            <div class="cart-loading" id="cartLoading">
+                <i class="bi bi-hourglass-split"></i>
+                <p>Cargando carrito...</p>
+            </div>
+            <div class="cart-empty" id="cartEmpty" style="display: none;">
+                <i class="bi bi-cart-x"></i>
+                <p id="cartEmptyMessage">Tu carrito está vacío</p>
+                <a href="/" class="btn btn-primary" id="cartEmptyAction">Seguir comprando</a>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">0.00</span>
+            </div>
+            <button class="btn btn-primary cart-checkout" id="cartCheckout">
+                <i class="bi bi-credit-card me-2"></i>
+                Proceder al pago
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Item Template -->
+<template id="cartItemTemplate">
+    <div class="cart-item" data-id="">
+        <div class="cart-item-wrapper">
+            <div class="cart-item-image">
+                <img src="" alt="">
+                <div class="cart-item-overlay">
+                    <button class="cart-item-delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="cart-item-info">
+                <h4 class="cart-item-title"></h4>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Cart Button (Floating) -->
+<button class="cart-button" id="cartButton">
+    <i class="bi bi-cart3"></i>
+    <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Cart Offcanvas JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM Elements
+        const cartButton = document.getElementById('cartButton');
+        const cartOffcanvas = document.getElementById('cartOffcanvas');
+        const cartBackdrop = document.getElementById('cartBackdrop');
+        const cartClose = document.getElementById('cartClose');
+        const cartLoading = document.getElementById('cartLoading');
+        const cartEmpty = document.getElementById('cartEmpty');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartCount = document.getElementById('cartCount');
+        const cartCheckout = document.getElementById('cartCheckout');
+        const cartItemTemplate = document.getElementById('cartItemTemplate');
+        
+        // State
+        let cartData = [];
+        let isLoading = false;
+        
+        // Initialize cart
+        initCart();
+        
+        function initCart() {
+            // Event listeners
+            cartButton.addEventListener('click', openCart);
+            cartClose.addEventListener('click', closeCart);
+            cartBackdrop.addEventListener('click', closeCart);
+            cartCheckout.addEventListener('click', proceedToCheckout);
+            
+            // Load cart on page load
+            loadCart();
+        }
+        
+        function openCart() {
+            cartOffcanvas.classList.add('show');
+            cartBackdrop.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            // Always reload cart when opening
+            loadCart();
+        }
+        
+        function closeCart() {
+            cartOffcanvas.classList.remove('show');
+            cartBackdrop.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        async function loadCart() {
+            if (isLoading) return;
+            isLoading = true;
+            showLoading();
+            
+            try {
+                const response = await fetch('/api/carrito');
+                if (response.status === 401) {
+                    // User not authenticated, show empty state
+                    showEmpty();
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error('Failed to load cart');
+                }
+                
+                cartData = await response.json();
+                renderCart();
+            } catch (error) {
+                console.error('Error loading cart:', error);
+                showError();
+            } finally {
+                isLoading = false;
+            }
+        }
+        
+        function showLoading() {
+            cartLoading.style.display = 'block';
+            cartEmpty.style.display = 'none';
+            cartItems.style.display = 'none';
+        }
+        
+        function showEmpty() {
+            cartLoading.style.display = 'none';
+            cartEmpty.style.display = 'block';
+            cartItems.style.display = 'none';
+            updateCartCount(0);
+            updateCartTotal(0);
+            
+            const emptyMessage = document.getElementById('cartEmptyMessage');
+            const emptyAction = document.getElementById('cartEmptyAction');
+            emptyMessage.textContent = 'Tu carrito está vacío';
+            emptyAction.textContent = 'Seguir comprando';
+            emptyAction.href = '/';
+        }
+        
+        function showError() {
+            cartLoading.style.display = 'none';
+            cartEmpty.style.display = 'block';
+            cartItems.style.display = 'none';
+            // You could show a more specific error message here
+        }
+        
+        function renderCart() {
+            if (!cartData || cartData.length === 0) {
+                showEmpty();
+                return;
+            }
+            
+            cartLoading.style.display = 'none';
+            cartEmpty.style.display = 'none';
+            cartItems.style.display = 'grid';
+            
+            // Clear existing items
+            cartItems.innerHTML = '';
+            
+            // Add cart items
+            cartData.forEach(item => {
+                const cartItem = createCartItem(item);
+                cartItems.appendChild(cartItem);
+            });
+            
+            // Update cart count and total
+            updateCartCount(cartData.length);
+            updateCartTotal(calculateTotal());
+        }
+        
+        function createCartItem(item) {
+            const template = cartItemTemplate.content;
+            const clone = template.cloneNode(true);
+
+            // Set item data
+            clone.querySelector('.cart-item').setAttribute('data-id', item.id);
+            clone.querySelector('.cart-item-image img').src = item.imagen ? `/imagenes/${encodeURIComponent(item.imagen)}` : 'https://via.placeholder.com/120x120?text=No+Image';
+            clone.querySelector('.cart-item-image img').alt = item.título || 'Producto';
+            clone.querySelector('.cart-item-title').textContent = item.título || 'Producto';
+
+            // Add delete functionality
+            const deleteBtn = clone.querySelector('.cart-item-delete');
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteCartItem(item.id);
+            });
+
+            return clone;
+        }
+        
+        async function deleteCartItem(itemId) {
+            if (isLoading) return;
+            
+            if (!confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
+                return;
+            }
+            
+            isLoading = true;
+            
+            try {
+                const response = await fetch(`/api/carrito/${itemId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.status === 401) {
+                    // User not authenticated, show empty state
+                    showEmpty();
+                    return;
+                }
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete item');
+                }
+                
+                const result = await response.json();
+                
+                // Remove item from DOM
+                const itemElement = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+                if (itemElement) {
+                    itemElement.style.transform = 'translateX(100%)';
+                    itemElement.style.opacity = '0';
+                    setTimeout(() => {
+                        itemElement.remove();
+                    }, 300);
+                }
+                
+                // Update cart data
+                cartData = cartData.filter(item => item.id !== itemId);
+                
+                // Update UI
+                setTimeout(() => {
+                    if (cartData.length === 0) {
+                        showEmpty();
+                    } else {
+                        updateCartCount(result.cartCount || cartData.length);
+                        updateCartTotal(result.cartTotal || calculateTotal());
+                    }
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Error al eliminar el producto. Por favor, inténtalo de nuevo.');
+            } finally {
+                isLoading = false;
+            }
+        }
+        
+        function calculateTotal() {
+            return cartData.reduce((total, item) => {
+                return total + ((parseFloat(item.precio) || 0) * (item.cantidad || 1));
+            }, 0);
+        }
+        
+        function updateCartCount(count) {
+            cartCount.textContent = count;
+            
+            // Update navbar cart count badge
+            const navCartCount = document.getElementById('navCartCount');
+            if (navCartCount) {
+                navCartCount.textContent = count;
+                if (count === 0) {
+                    navCartCount.style.display = 'none';
+                } else {
+                    navCartCount.style.display = 'inline-block';
+                }
+            }
+            
+            // Make the badge pulse when updated
+            cartCount.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                cartCount.style.transform = 'scale(1)';
+            }, 200);
+            
+            // Hide badge if empty
+            if (count === 0) {
+                cartCount.style.display = 'none';
+            } else {
+                cartCount.style.display = 'flex';
+            }
+        }
+        
+        function updateCartTotal(total) {
+            cartTotal.textContent = `${parseFloat(total).toFixed(2)} €`;
+        }
+        
+        function proceedToCheckout() {
+            if (cartData.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            
+            // Redirect to payment page
+            window.location.href = '/pago';
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && cartOffcanvas.classList.contains('show')) {
+                closeCart();
+            }
+        });
+        
+        // Global function to refresh cart (can be called after adding items)
+        window.refreshCart = async function() {
+            try {
+                const response = await fetch('/api/carrito');
+                if (response.status === 401) {
+                    updateCartCount(0);
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error('Failed to load cart');
+                }
+                
+                cartData = await response.json();
+                renderCart();
+                
+                // Always update cart count badge
+                updateCartCount(cartData.length);
+                
+            } catch (error) {
+                console.error('Error refreshing cart:', error);
+                updateCartCount(0);
+            }
+        };
+        
+        // Global function to open cart
+        window.openCartSidebar = function() {
+            openCart();
+        };
+    });
+    </script>
+</body>
+</html>

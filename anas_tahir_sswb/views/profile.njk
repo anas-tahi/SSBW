@@ -1,0 +1,1005 @@
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff; 
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Modern Animated Background */
+.modern-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(120, 119, 198, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 119, 168, 0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: -2;
+}
+
+.floating-orbs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 20s ease-in-out infinite;
+}
+
+.orb1 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.orb2 {
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(135deg, #7877c6, #a8a4ff);
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 5s;
+}
+
+.orb3 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #ff77a8, #ff6b9d);
+    top: 50%;
+    left: 50%;
+    animation-delay: 10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(100px, 50px) scale(1.1); }
+    50% { transform: translate(-50px, 100px) scale(0.9); }
+    75% { transform: translate(50px, -50px) scale(1.05); }
+}
+
+/* Main Container */
+.profile-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    padding: 60px;
+    max-width: 900px;
+    width: 100%;
+    animation: slideUp 1s ease-out;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(60px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.profile-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 3rem;
+    color: #0a0a0f;
+    animation: iconFloat 4s ease-in-out infinite;
+    box-shadow: 
+        0 20px 40px rgba(76, 175, 80, 0.3),
+        0 0 0 1px rgba(76, 175, 80, 0.1);
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.profile-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #4CAF50, #81C784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+.profile-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+/* Profile Form */
+.profile-form {
+    margin-bottom: 40px;
+}
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    font-size: 1.1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 
+        0 0 0 4px rgba(76, 175, 80, 0.1),
+        0 10px 30px rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-input:focus + .input-icon {
+    color: #4CAF50;
+    transform: scale(1.1);
+}
+
+/* Phone Input Styles */
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.phone-input-wrapper:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-1px);
+}
+
+.phone-input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 
+        0 0 0 4px rgba(76, 175, 80, 0.1),
+        0 10px 30px rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+.country-selector {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.country-select {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 16px 8px;
+    cursor: pointer;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    min-width: 60px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    background-size: 12px;
+    padding-right: 20px;
+    text-align: center;
+}
+
+.selected-flag {
+    font-size: 1.2rem;
+    line-height: 1;
+    min-width: 24px;
+    text-align: center;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
+}
+
+.phone-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.phone-input {
+    width: 100%;
+    padding: 16px 20px 16px 20px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.phone-icon {
+    position: absolute;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.phone-input-wrapper:focus-within .phone-icon {
+    color: #4CAF50;
+    transform: scale(1.1);
+}
+
+/* Select Styles */
+.form-select {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 16px;
+    padding-right: 50px;
+}
+
+.form-select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 
+        0 0 0 4px rgba(76, 175, 80, 0.1),
+        0 10px 30px rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+.form-select option {
+    background: #1a1a2e;
+    color: #ffffff;
+    padding: 8px;
+}
+
+/* Textarea Styles */
+.form-textarea {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.form-textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 
+        0 0 0 4px rgba(76, 175, 80, 0.1),
+        0 10px 30px rgba(76, 175, 80, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Checkbox Styles */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.checkbox-input {
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.checkbox-input:checked {
+    background: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.checkbox-input:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0a0a0f;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* Submit Button */
+.profile-submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    margin-top: 32px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+    box-shadow: 
+        0 10px 25px rgba(76, 175, 80, 0.3),
+        0 0 0 1px rgba(76, 175, 80, 0.1);
+}
+
+.profile-submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.profile-submit-btn:hover::before {
+    left: 100%;
+}
+
+.profile-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 20px 40px rgba(76, 175, 80, 0.4),
+        0 0 0 1px rgba(76, 175, 80, 0.2);
+    background: linear-gradient(135deg, #45a049, #66bb6a);
+}
+
+.profile-submit-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Alert Messages */
+.alert-message {
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: alertSlide 0.5s ease-out;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    font-size: 0.95rem;
+}
+
+@keyframes alertSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: rgba(76, 175, 80, 0.3);
+    color: #4CAF50;
+}
+
+.alert-error {
+    background: rgba(244, 67, 54, 0.1);
+    border-color: rgba(244, 67, 54, 0.3);
+    color: #f44336;
+}
+
+.alert-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.alert-content h4 {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.alert-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-card {
+        padding: 40px 30px;
+        margin: 20px;
+        border-radius: 24px;
+    }
+    
+    .profile-title {
+        font-size: 2.2rem;
+    }
+    
+    .profile-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .phone-input-wrapper {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    
+    .country-select {
+        min-width: auto;
+        text-align: center;
+    }
+    
+    .phone-input {
+        padding: 16px 50px 16px 20px;
+    }
+}
+
+/* Loading States */
+.form-input.loading {
+    background: rgba(255, 255, 255, 0.08);
+    cursor: not-allowed;
+}
+
+.profile-submit-btn.loading {
+    background: linear-gradient(135deg, #45a049, #66bb6a);
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Success/Error States */
+.form-input.success {
+    border-color: rgba(76, 175, 80, 0.5);
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.form-input.success + .input-icon {
+    color: #4CAF50;
+}
+
+.form-input.error {
+    border-color: rgba(244, 67, 54, 0.5);
+    background: rgba(244, 67, 54, 0.05);
+}
+
+.form-input.error + .input-icon {
+    color: #f44336;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 100px 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.empty-icon {
+    font-size: 6rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.empty-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.empty-text {
+    color: #b8b8d1;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="modern-bg"></div>
+<div class="floating-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+</div>
+
+<div class="profile-container">
+    {% if user %}
+        <div class="profile-card">
+            <!-- Header -->
+            <div class="profile-header">
+                <div class="profile-icon">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h1 class="profile-title">Mi Perfil</h1>
+                <p class="profile-subtitle">Gestiona tu información personal</p>
+            </div>
+
+            <!-- Alert Messages -->
+            {% if success %}
+                <div class="alert-message alert-success">
+                    <div class="alert-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h4>¡Perfil actualizado!</h4>
+                        <p>{{ message or 'Tu información ha sido guardada correctamente.' }}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <div class="alert-message alert-error">
+                    <div class="alert-icon">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h4>Error al actualizar</h4>
+                        <p>{{ message or 'No se pudo guardar tu información. Por favor, inténtalo de nuevo.' }}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Profile Form -->
+            <form method="POST" action="/profile" class="profile-form">
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-person-circle"></i>
+                        Información Personal
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre" class="form-label">Nombre Completo</label>
+                            <div class="input-wrapper">
+                                <input type="text" 
+                                       id="nombre" 
+                                       name="nombre" 
+                                       class="form-input" 
+                                       placeholder="Juan Pérez" 
+                                       value="{{ user.nombre or '' }}"
+                                       required>
+                                <span class="input-icon">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" 
+                                       id="email" 
+                                       name="email" 
+                                       class="form-input" 
+                                       placeholder="tu@email.com" 
+                                       value="{{ user.email or '' }}"
+                                       readonly>
+                                <span class="input-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <div class="phone-input-wrapper">
+                            <div class="country-selector">
+                                <select id="countryCode" name="countryCode" class="country-select">
+                                    <option value="+34">ES +34</option>
+                                    <option value="+33">FR +33</option>
+                                    <option value="+212">MA +212</option>
+                                    <option value="+44">UK +44</option>
+                                    <option value="+49">DE +49</option>
+                                    <option value="+39">IT +39</option>
+                                    <option value="+31">NL +31</option>
+                                    <option value="+41">CH +41</option>
+                                    <option value="+351">PT +351</option>
+                                    <option value="+46">SE +46</option>
+                                    <option value="+47">NO +47</option>
+                                    <option value="+45">DK +45</option>
+                                    <option value="+358">FI +358</option>
+                                    <option value="+48">PL +48</option>
+                                    <option value="+43">AT +43</option>
+                                    <option value="+32">BE +32</option>
+                                    <option value="+352">LU +352</option>
+                                    <option value="+353">IE +353</option>
+                                    <option value="+1">US +1</option>
+                                    <option value="+61">AU +61</option>
+                                    <option value="+81">JP +81</option>
+                                    <option value="+82">KR +82</option>
+                                    <option value="+86">CN +86</option>
+                                    <option value="+91">IN +91</option>
+                                    <option value="+20">EG +20</option>
+                                    <option value="+966">SA +966</option>
+                                    <option value="+971">AE +971</option>
+                                    <option value="+972">IL +972</option>
+                                    <option value="+90">TR +90</option>
+                                    <option value="+7">RU +7</option>
+                                    <option value="+375">BY +375</option>
+                                    <option value="+380">UA +380</option>
+                                    <option value="+40">RO +40</option>
+                                    <option value="+421">SK +421</option>
+                                    <option value="+420">CZ +420</option>
+                                    <option value="+36">HU +36</option>
+                                    <option value="+381">RS +381</option>
+                                    <option value="+385">HR +385</option>
+                                    <option value="+386">SI +386</option>
+                                    <option value="+389">MK +389</option>
+                                    <option value="+359">BG +359</option>
+                                    <option value="+30">GR +30</option>
+                                </select>
+                                <div class="selected-flag" id="selectedFlag">{{ user.telefono and user.telefono.toString().split(' ')[0] or 'ES' }}</div>
+                            </div>
+                            <div class="phone-input-group">
+                                <input type="tel" 
+                                       id="telefono" 
+                                       name="telefono" 
+                                       class="form-input phone-input" 
+                                       placeholder="912345678 (9 dígitos)"
+                                       value="{{ user.telefono and user.telefono.toString().split(' ')[1] or '' }}">
+                                <span class="input-icon phone-icon">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-heart"></i>
+                        Información Personal
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                            <div class="input-wrapper">
+                                <input type="date" 
+                                       id="fecha_nacimiento" 
+                                       name="fecha_nacimiento" 
+                                       class="form-input" 
+                                       value="{{ user.fecha_nacimiento | date('YYYY-MM-DD') or '' }}">
+                                <span class="input-icon">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="genero" class="form-label">Género</label>
+                            <select id="genero" name="genero" class="form-select">
+                                <option value="">Seleccionar...</option>
+                                <option value="masculino" {% if user.genero == 'masculino' %}selected{% endif %}>Masculino</option>
+                                <option value="femenino" {% if user.genero == 'femenino' %}selected{% endif %}>Femenino</option>
+                                <option value="otro" {% if user.genero == 'otro' %}selected{% endif %}>Otro</option>
+                                <option value="no_especificar" {% if user.genero == 'no_especificar' %}selected{% endif %}>No especificar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <div class="input-wrapper">
+                            <input type="text" 
+                                   id="direccion" 
+                                   name="direccion" 
+                                   class="form-input" 
+                                   placeholder="Calle Principal, 123, Ciudad, País" 
+                                   value="{{ user.direccion or '' }}">
+                            <span class="input-icon">
+                                <i class="bi bi-geo-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <label for="biografia" class="form-label">Biografía</label>
+                        <textarea id="biografia" 
+                                  name="biografia" 
+                                  class="form-textarea" 
+                                  placeholder="Cuéntanos un poco sobre ti...">{{ user.biografia or '' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="bi bi-gear"></i>
+                        Preferencias
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="idioma" class="form-label">Idioma</label>
+                            <select id="idioma" name="idioma" class="form-select">
+                                <option value="es" {% if user.idioma == 'es' %}selected{% endif %}>Español</option>
+                                <option value="en" {% if user.idioma == 'en' %}selected{% endif %}>English</option>
+                                <option value="fr" {% if user.idioma == 'fr' %}selected{% endif %}>Français</option>
+                                <option value="de" {% if user.idioma == 'de' %}selected{% endif %}>Deutsch</option>
+                                <option value="it" {% if user.idioma == 'it' %}selected{% endif %}>Italiano</option>
+                                <option value="pt" {% if user.idioma == 'pt' %}selected{% endif %}>Português</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newsletter" class="form-label">Newsletter</label>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="newsletter" name="newsletter" class="checkbox-input" {% if user.newsletter %}checked{% endif %}>
+                                <label for="newsletter" class="checkbox-label">Suscribirse al newsletter</label>
+                            </div>
+                        </div>
+                    </div>
+
+                <button type="submit" class="profile-submit-btn">
+                    <i class="bi bi-save me-2"></i>
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-person-x"></i>
+            </div>
+            <h2 class="empty-title">No has iniciado sesión</h2>
+            <p class="empty-text">Para ver tu perfil, por favor inicia sesión primero.</p>
+            
+            <div class="empty-actions">
+                <a href="/login" class="profile-submit-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    Iniciar Sesión
+                </a>
+                <a href="/register" class="profile-submit-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #c9a84c, #e8d070); color: #0a0a0f;">
+                    <i class="bi bi-person-plus me-2"></i>
+                    Crear Cuenta
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form interactions
+    const form = document.querySelector('.profile-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('.profile-submit-btn');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+    
+    // Phone validation
+    const phoneInput = document.getElementById('telefono');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+            const value = this.value.replace(/\D/g, '');
+            if (value.length <= 9) {
+                this.value = value;
+            } else {
+                this.value = value.slice(0, 9);
+            }
+        });
+    }
+    
+    // Country selector interaction
+    const countrySelect = document.getElementById('countryCode');
+    const selectedFlag = document.getElementById('selectedFlag');
+    if (countrySelect && selectedFlag) {
+        countrySelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const flagText = selectedOption.text.split(' ')[0];
+            selectedFlag.textContent = flagText;
+        });
+    }
+});
+</script>
+{% endblock %}

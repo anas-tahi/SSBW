@@ -1,0 +1,13 @@
+# Tarea 13: Configuración del proxy inverso Caddy
+# Si se cambia :80 por un dominio real, gestiona SSL automáticamente
+
+:80 {
+
+  handle_path /* {
+    reverse_proxy tienda-prado:3000
+  }
+
+  log {
+    output stdout
+  }
+}

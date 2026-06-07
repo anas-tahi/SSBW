@@ -1,0 +1,44 @@
+// Tarea 3: Prisma Schema — PostgreSQL
+// Arrancar BD con: docker compose up -d
+// Luego: npx prisma migrate dev && npx prisma generate
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// USERS (Tarea 6)
+model Usuario {
+  email            String    @id @db.Char(127)
+  nombre           String    @db.Char(127)
+  contraseña       String    @db.Text
+  admin            Boolean   @default(false)
+
+  telefono         String?   @db.Char(20)
+  direccion        String?   @db.Text
+  fecha_nacimiento DateTime?
+  genero           String?   @db.Char(20)
+  biografia        String?   @db.Text
+  idioma           String    @default("es") @db.Char(5)
+  newsletter       Boolean   @default(false)
+  creado_en        DateTime  @default(now())
+  actualizado_en   DateTime?
+
+  @@map("usuarios")
+}
+
+// PRODUCTS (Tarea 3)
+model Producto {
+  id          Int     @id @default(autoincrement())
+  título      String  @db.Char(127)
+  descripción String  @db.Text
+  precio      Decimal
+  imagen      String  @db.Char(127)
+
+  @@map("productos")
+}

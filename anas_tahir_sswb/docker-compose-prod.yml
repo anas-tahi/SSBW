@@ -1,0 +1,67 @@
+# ============================================================
+# Tienda Prado — Production Docker Compose
+# Tarea 13: SSBW — Universidad de Granada
+# ============================================================
+# Usage:
+#   cp .env.example .env     ← fill in real values first
+#   docker compose -f docker-compose-prod.yml up -d
+# ============================================================
+
+services:
+
+  # ── PostgreSQL Database ───────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: ssbw_db
+    restart: always
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB:       ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Express Application ───────────────────────────────────
+  tienda-prado:
+    build: .
+    container_name: ssbw_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV:          production
+      PORT:              3000
+      POSTGRES_HOST:     db
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB:       ${POSTGRES_DB}
+      DATABASE_URL:      postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      SECRET_KEY:        ${SECRET_KEY}
+      SESSION_SECRET:    ${SESSION_SECRET}
+
+  # ── Caddy Reverse Proxy ───────────────────────────────────
+  caddy:
+    image: caddy:alpine
+    container_name: ssbw_caddy
+    restart: unless-stopped
+    depends_on:
+      - tienda-prado
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_config:/config
+      - caddy_data:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+
+# ── Volumes ───────────────────────────────────────────────
+volumes:
+  postgres_data:
+  caddy_config:
+  caddy_data:

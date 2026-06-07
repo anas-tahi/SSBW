@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+../astro/node_modules/
+
+# Secrets — NEVER commit these
+.env
+.env.local
+
+# Logs & generated
+logs/
+invoices/
+generated/
+dist/
+.astro/
+
+# DB files
+dev.db
+*.db
+
+# Images (too large)
+imagenes/

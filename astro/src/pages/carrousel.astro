@@ -1,0 +1,10 @@
+---
+// Tarea 12: Carrousel con imágenes pasadas como props (no desde API)
+import CarrouselSSG from '../components/CarrouselSSG';
+import Layout from '../layouts/Layout.astro';
+import productos from '../../data/productos.json';
+---
+
+<Layout title="Galería — Tienda Prado">
+  <CarrouselSSG productos={productos} client:load />
+</Layout>
