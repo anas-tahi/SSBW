@@ -4,7 +4,6 @@ interface Props {
 }
 const { title = 'Tienda Prado' } = Astro.props;
 ---
-
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -13,12 +12,6 @@ const { title = 'Tienda Prado' } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      @import "tailwindcss/base";
-      @import "tailwindcss/components";
-      @import "tailwindcss/utilities";
-      body { font-family: 'Montserrat', sans-serif; }
-    </style>
   </head>
   <body class="min-h-screen bg-white">
     <slot />

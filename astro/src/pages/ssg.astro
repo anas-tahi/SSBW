@@ -1,23 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CardProducto from '../components/CardProducto.astro';
-import productos from '../../data/productos.json';
+import productosData from '../../data/productos.json';
 
-const p = productos.slice(0, 12);
+const p = productosData.slice(0, 12);
 ---
-
 <Layout title="Destacados — Tienda Prado">
-  <div class="min-h-screen bg-gray-50 py-12 px-4">
-    <div class="max-w-6xl mx-auto">
-      <section class="mb-10 text-center">
-        <h1 class="font-serif text-5xl text-gray-700 tracking-widest mb-2">Destacados</h1>
-        <p class="text-gray-500">Una selección de nuestros productos más especiales</p>
-      </section>
-      <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div style="min-height:100vh; background:#f9fafb; padding:3rem 1rem;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:2.5rem;">
+        <h1 style="font-size:3rem; color:#374151; letter-spacing:0.2em; margin-bottom:0.5rem;">Destacados</h1>
+        <p style="color:#6b7280;">Una seleccion de nuestros productos mas especiales</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1.5rem;">
         {p.map((producto, i) => (
-          <CardProducto título={producto.título} texto_precio={producto.texto_precio} imagen={producto.imagen} index={i} />
+          <CardProducto
+            titulo={producto.título}
+            texto_precio={producto.texto_precio}
+            imagen={producto.imagen}
+            index={i}
+          />
         ))}
-      </section>
+      </div>
     </div>
   </div>
 </Layout>

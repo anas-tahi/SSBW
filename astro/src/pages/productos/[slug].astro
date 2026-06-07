@@ -1,32 +1,36 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import productos from '../../../data/productos.json';
+import productosData from '../../../data/productos.json';
 
 export async function getStaticPaths() {
-  return productos.map((pr, index) => ({
+  return productosData.map((pr, index) => ({
     params: { slug: String(index) },
     props: { producto: pr }
   }));
 }
 
 const { producto } = Astro.props;
+const titulo = producto.título;
+const descripcion = producto.descripción;
 ---
-
-<Layout title={`${producto.título} — Tienda Prado`}>
-  <div class="min-h-screen bg-gray-50 py-12 px-4">
-    <div class="max-w-4xl mx-auto">
-      <a href="/ssg" class="text-red-700 hover:underline mb-8 inline-block">← Volver a Destacados</a>
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        <div class="bg-gray-100 flex items-center justify-center p-8">
-          <img src={`/images/${producto.imagen}`} alt={producto.título} class="max-h-80 object-contain rounded-xl" onerror="this.src='https://via.placeholder.com/400x400?text=Tienda+Prado'" />
+<Layout title={`${titulo} — Tienda Prado`}>
+  <div style="min-height:100vh; background:#f9fafb; padding:3rem 1rem;">
+    <div style="max-width:900px; margin:0 auto;">
+      <a href="/ssg" style="color:#c0392b; text-decoration:none; display:inline-block; margin-bottom:2rem;">
+        &larr; Volver a Destacados
+      </a>
+      <div style="background:white; border-radius:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.1); overflow:hidden; display:grid; grid-template-columns:1fr 1fr;">
+        <div style="background:#f3f4f6; display:flex; align-items:center; justify-content:center; padding:2rem;">
+          <img src={`/images/${producto.imagen}`} alt={titulo}
+            style="max-height:320px; object-fit:contain; border-radius:0.5rem;"
+            onerror="this.src='https://via.placeholder.com/400x400?text=Tienda+Prado'" />
         </div>
-        <div class="p-8 flex flex-col justify-center">
-          <h1 class="font-serif text-3xl text-gray-800 mb-4">{producto.título}</h1>
-          <p class="text-gray-600 mb-6 leading-relaxed">{producto.descripción}</p>
-          <p class="text-2xl font-bold text-red-700 mb-6">{producto.texto_precio}</p>
-          <button class="bg-red-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors">
-            Añadir al carrito
-          </button>
+        <div style="padding:2rem; display:flex; flex-direction:column; justify-content:center;">
+          <h1 style="font-size:1.75rem; color:#1a1a1a; margin-bottom:1rem;">{titulo}</h1>
+          <p style="color:#4b5563; margin-bottom:1.5rem; line-height:1.6;">{descripcion}</p>
+          <p style="font-size:1.5rem; font-weight:700; color:#c0392b; margin-bottom:1.5rem;">
+            {producto.texto_precio}
+          </p>
         </div>
       </div>
     </div>

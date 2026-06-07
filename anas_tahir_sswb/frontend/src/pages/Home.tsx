@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import type { Product } from '../types'
@@ -8,20 +7,14 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchParams] = useSearchParams()
 
   useEffect(() => {
     fetchProducts()
-    // Check for search query in URL
-    const searchFromUrl = searchParams.get('search')
-    if (searchFromUrl) {
-      setSearchQuery(searchFromUrl)
-    }
-  }, [searchParams])
+  }, [])
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/productos`)
+      const response = await fetch('/api/productos')
       const data = await response.json()
       if (data.success) {
         setProducts(data.data)
@@ -34,8 +27,8 @@ export default function Home() {
   }
 
   const filteredProducts = products.filter(product =>
-    product.título.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-    product.descripción.toLowerCase().startsWith(searchQuery.toLowerCase())
+    product.título.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.descripción.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   if (loading) {
@@ -95,6 +88,3 @@ export default function Home() {
     </div>
   )
 }
-
-
-

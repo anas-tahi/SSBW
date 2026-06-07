@@ -24,7 +24,7 @@ function getProductoAleatorio(productos: Producto[]): Producto {
 
 export default function Cuadros() {
   const { data, error, isLoading, mutate } = useSWR<ApiResponse>(
-    `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/productos?limit=50`,
+    'http://localhost:3000/api/productos?limit=50',
     fetcher
   )
 
@@ -45,7 +45,7 @@ export default function Cuadros() {
           {error && <p className="text-error text-sm px-4">{error.message}</p>}
           {!isLoading && !error && producto && (
             <img
-              src={`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/imagenes/${producto.imagen}`}
+              src={`http://localhost:3000/imagenes/${producto.imagen}`}
               alt={producto.título}
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -75,6 +75,3 @@ export default function Cuadros() {
     </div>
   )
 }
-
-
-

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ShoppingCart, Search, User, Menu, X, Globe, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
@@ -8,15 +8,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, logout } = useAuth()
   const { cartCount } = useCart()
-  const [searchQuery, setSearchQuery] = useState('')
-  const navigate = useNavigate()
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      navigate(`/home?search=${encodeURIComponent(searchQuery.trim())}`)
-    }
-  }
 
   const handleLogout = async () => {
     await logout()
@@ -45,34 +36,22 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-prado-dark rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">TP</span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-prado-dark block leading-tight">
-                TIENDA PRADO
-              </span>
-              <span className="text-xs text-gray-500 block">
-                Official Store of the Museo Nacional del Prado
-              </span>
-            </div>
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-2xl font-bold text-prado-dark">
+              TIENDA PRADO
+            </span>
           </Link>
 
           {/* Search */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
-            <form onSubmit={handleSearch} className="relative w-full">
+            <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-prado-red"
               />
-              <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-prado-red transition-colors">
-                <Search size={20} />
-              </button>
-            </form>
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            </div>
           </div>
 
           {/* Actions */}
@@ -120,9 +99,6 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 py-3 border-t border-gray-100">
-          <Link to="/home" className="text-prado-dark hover:text-prado-red transition-colors font-medium">
-            HOME
-          </Link>
           <Link to="/books" className="text-prado-dark hover:text-prado-red transition-colors font-medium">
             BOOKS
           </Link>
@@ -135,57 +111,60 @@ export default function Header() {
           <Link to="/prints" className="text-prado-dark hover:text-prado-red transition-colors font-medium">
             PRINTS
           </Link>
+          <Link to="/home" className="text-prado-dark hover:text-prado-red transition-colors font-medium">
+            HOME
+          </Link>
         </nav>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-gray-200">
             <div className="flex flex-col gap-2">
-              <Link
-                to="/home"
-                className="py-2 text-prado-dark hover:text-prado-red transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                HOME
-              </Link>
-              <Link
-                to="/books"
+              <Link 
+                to="/books" 
                 className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 BOOKS
               </Link>
-              <Link
-                to="/exhibitions"
+              <Link 
+                to="/exhibitions" 
                 className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 EXHIBITIONS
               </Link>
-              <Link
-                to="/collaborations"
+              <Link 
+                to="/collaborations" 
                 className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 COLLABORATIONS
               </Link>
-              <Link
-                to="/prints"
+              <Link 
+                to="/prints" 
                 className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 PRINTS
               </Link>
+              <Link 
+                to="/home" 
+                className="py-2 text-prado-dark hover:text-prado-red transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                HOME
+              </Link>
               {user ? (
                 <>
-                  <Link
-                    to="/profile"
+                  <Link 
+                    to="/profile" 
                     className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Profile
                   </Link>
-                  <button
+                  <button 
                     onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
                     className="py-2 text-prado-dark hover:text-prado-red transition-colors text-left"
                   >
@@ -193,8 +172,8 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                <Link
-                  to="/login"
+                <Link 
+                  to="/login" 
                   className="py-2 text-prado-dark hover:text-prado-red transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -208,6 +187,3 @@ export default function Header() {
     </header>
   )
 }
-
-
-

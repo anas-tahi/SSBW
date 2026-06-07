@@ -1,6 +1,4 @@
-// Tarea 12: Carrousel React con props (SSG) — sin API, imágenes pasadas como props
 import { useState, useCallback, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -34,54 +32,53 @@ const CarrouselSSG = ({ productos }: Props) => {
   }, [emblaApi]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12">
-      <div className="max-w-5xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-white text-center mb-10 font-garamond tracking-widest">
-          Galería de Imágenes
+    <div style={{minHeight:'100vh', background:'#1a1a2e', padding:'3rem 1rem'}}>
+      <div style={{maxWidth:'900px', margin:'0 auto'}}>
+        <h2 style={{color:'white', textAlign:'center', fontSize:'2.5rem', marginBottom:'2rem'}}>
+          Galeria de Imagenes
         </h2>
-
-        {/* Embla Carousel */}
-        <div className="relative mb-10">
-          <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
-            <div className="flex">
+        <div style={{position:'relative'}}>
+          <div style={{overflow:'hidden', borderRadius:'1rem'}} ref={emblaRef}>
+            <div style={{display:'flex'}}>
               {productos.map((p, i) => (
-                <div key={i} className="flex-[0_0_100%] min-w-0 px-4">
-                  <div className="bg-white rounded-2xl overflow-hidden">
+                <div key={i} style={{flex:'0 0 100%', minWidth:0, padding:'0 1rem'}}>
+                  <div style={{background:'white', borderRadius:'1rem', overflow:'hidden'}}>
                     <img
-                      src={`/images/${p.imagen}`}
+                      src={"/images/" + p.imagen}
                       alt={p.título}
-                      className="w-full h-72 object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x400?text=Tienda+Prado';
-                      }}
+                      style={{width:'100%', height:'300px', objectFit:'cover'}}
+                      onError={(e) => { (e.target as HTMLImageElement).src='https://via.placeholder.com/800x400?text=Tienda+Prado'; }}
                     />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">{p.título}</h3>
-                      <p className="text-red-600 font-semibold">{p.texto_precio}</p>
+                    <div style={{padding:'1.5rem'}}>
+                      <h3 style={{fontWeight:'bold', marginBottom:'0.5rem'}}>{p.título}</h3>
+                      <p style={{color:'#c0392b', fontWeight:'600'}}>{p.texto_precio}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
           <button onClick={scrollPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-3 shadow-lg">
-            <ChevronLeft className="w-6 h-6" />
+            style={{position:'absolute', left:'0.5rem', top:'50%', transform:'translateY(-50%)',
+              background:'rgba(255,255,255,0.9)', border:'none', borderRadius:'50%',
+              width:'3rem', height:'3rem', cursor:'pointer', fontSize:'1.2rem'}}>
+            &#8249;
           </button>
           <button onClick={scrollNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-3 shadow-lg">
-            <ChevronRight className="w-6 h-6" />
+            style={{position:'absolute', right:'0.5rem', top:'50%', transform:'translateY(-50%)',
+              background:'rgba(255,255,255,0.9)', border:'none', borderRadius:'50%',
+              width:'3rem', height:'3rem', cursor:'pointer', fontSize:'1.2rem'}}>
+            &#8250;
           </button>
-
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-4">
-            {productos.map((_, i) => (
-              <button key={i} onClick={() => emblaApi?.scrollTo(i)}
-                className={`h-2 rounded-full transition-all ${i === selectedIndex ? 'bg-red-500 w-8' : 'bg-gray-400 w-2'}`}
-              />
-            ))}
-          </div>
+        </div>
+        <div style={{display:'flex', justifyContent:'center', gap:'0.5rem', marginTop:'1rem'}}>
+          {productos.map((_, i) => (
+            <button key={i} onClick={() => emblaApi?.scrollTo(i)}
+              style={{width: i===selectedIndex ? '2rem' : '0.5rem', height:'0.5rem',
+                borderRadius:'999px', border:'none', cursor:'pointer',
+                background: i===selectedIndex ? '#e74c3c' : '#888',
+                transition:'all 0.3s'}} />
+          ))}
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const CarouselPage = () => {
 
   // Fetch products using SWR
   const { data: products, error, isLoading } = useSWR<Product[]>('/api/productos?limit=20', async (url: string) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}${url}`);
+    const response = await fetch(`http://localhost:3000${url}`);
     if (!response.ok) throw new Error('Failed to fetch products');
     const data = await response.json();
     return data.data || data;
@@ -209,6 +209,3 @@ const CarouselPage = () => {
 };
 
 export default CarouselPage;
-
-
-

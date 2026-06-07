@@ -6,8 +6,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "render-build": "chmod +x node_modules/.bin/astro && astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "render-build": "chmod +x node_modules/.bin/astro && astro build"
   },
   "dependencies": {
     "astro": "^4.15.0",

@@ -1,24 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=EB+Garamond:ital@0;1&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@theme {
-  --font-montserrat: "Montserrat", sans-serif;
-  --font-garamond: "EB Garamond", serif;
-};
-
 @layer base {
   body {
-    @apply antialiased;
+    @apply bg-prado-light text-prado-dark antialiased;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-red-700 text-white px-6 py-3 rounded font-semibold 
-           hover:bg-red-800 transition-all duration-300 
-           focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-2;
+    @apply bg-prado-red text-white px-6 py-3 rounded font-semibold 
+           hover:bg-red-700 transition-all duration-300 
+           focus:outline-none focus:ring-2 focus:ring-prado-red focus:ring-offset-2 focus:ring-offset-white;
   }
   
   .card-hover {

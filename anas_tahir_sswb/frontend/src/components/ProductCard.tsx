@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ShoppingCart } from 'lucide-react'
 import type { Product } from '../types'
 import { useCart } from '../contexts/CartContext'
 
@@ -44,29 +45,27 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.descripción}
         </p>
         
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-prado-red font-bold text-xl">
-              €{Number(product.precio).toFixed(2)}
-            </span>
-          </div>
+        <div className="flex items-center justify-between">
+          <span className="text-prado-red font-bold text-xl">
+            €{Number(product.precio).toFixed(2)}
+          </span>
           
           <div className="flex gap-2">
             <Link 
               to={`/producto/${product.id}`}
-              className="flex-1 px-3 py-2 text-sm border border-prado-red text-prado-red rounded-lg 
-                       hover:bg-prado-red hover:text-white transition-all text-center font-medium"
+              className="px-3 py-2 text-sm border border-prado-red text-prado-red rounded-lg 
+                       hover:bg-prado-red hover:text-white transition-all"
             >
-              Ver
+              View
             </Link>
             
             <button 
               onClick={handleAddToCart}
-              className="flex-1 px-3 py-2 text-sm bg-prado-red text-white rounded-lg 
-                       hover:bg-red-700 transition-all font-medium"
-              title="Añadir al carrito"
+              className="p-2 bg-prado-red text-white rounded-lg 
+                       hover:bg-red-700 transition-all"
+              title="Add to cart"
             >
-              Añadir
+              <ShoppingCart size={18} />
             </button>
           </div>
         </div>
@@ -74,6 +73,3 @@ export default function ProductCard({ product }: ProductCardProps) {
     </div>
   )
 }
-
-
-

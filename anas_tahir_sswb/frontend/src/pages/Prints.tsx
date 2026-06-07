@@ -85,6 +85,3 @@ export default function Prints() {
     </div>
   );
 }
-
-
-

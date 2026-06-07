@@ -1,27 +1,13 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ShoppingCart, CreditCard } from 'lucide-react'
+import { useParams, Link } from 'react-router-dom'
+import { ArrowLeft, ShoppingCart } from 'lucide-react'
 import Header from '../components/Header'
 import type { Product } from '../types'
-import { useCart } from '../contexts/CartContext'
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
-  const { addToCart } = useCart()
-  const navigate = useNavigate()
-
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product)
-    }
-  }
-
-  const handleComprar = () => {
-    handleAddToCart()
-    navigate('/cart')
-  }
 
   useEffect(() => {
     fetchProduct()
@@ -29,7 +15,7 @@ export default function ProductDetail() {
 
   const fetchProduct = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/productos/${id}`)
+      const response = await fetch(`http://localhost:3000/api/productos/${id}`)
       const data = await response.json()
       if (data.success) {
         setProduct(data.data)
@@ -84,8 +70,8 @@ export default function ProductDetail() {
 
           {/* Product Info */}
           <div className="flex flex-col">
-            <span className="text-prado-red text-sm font-medium mb-2 uppercase">
-              {product.categoria}
+            <span className="text-prado-red text-sm font-medium mb-2">
+              PRINTS
             </span>
             
             <h1 className="text-3xl font-bold text-prado-dark mb-4">
@@ -101,31 +87,14 @@ export default function ProductDetail() {
                 €{product.precio.toFixed(2)}
               </span>
             </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={handleAddToCart}
-                className="btn-primary flex items-center justify-center gap-2 flex-1"
-              >
-                <ShoppingCart size={20} />
-                Añadir
-              </button>
-              <button
-                onClick={handleComprar}
-                className="flex items-center justify-center gap-2 flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-all font-medium"
-              >
-                <CreditCard size={20} />
-                Comprar
-              </button>
-            </div>
+            
+            <button className="btn-primary flex items-center justify-center gap-2 w-full">
+              <ShoppingCart size={20} />
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
-
-
-
-
